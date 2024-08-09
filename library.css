@@ -1,0 +1,157 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+.container {
+    width: 80%;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.just-start {
+    justify-content: flex-start;
+}
+
+.just-center {
+    justify-content: center;
+}
+
+.just-end {
+    justify-content: flex-end;
+}
+
+.just-sb {
+    justify-content: space-between;
+}
+
+.items-start {
+    align-items: flex-start;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.items-end {
+    align-items: flex-end;
+}
+
+.wrap {
+    flex-wrap: wrap;
+}
+
+.wrap-reverse {
+    flex-wrap: wrap-reverse;
+}
+
+.gap-2 {
+    gap: 2%;
+}
+
+.w-25 {
+    width: 25%;
+}
+
+.w-32 {
+    width: 32%;
+}
+
+.w-30 {
+    width: 30%;
+}
+
+.w-50 {
+    width: 50%;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.margin-h {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.margin-v {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.margin {
+    margin: auto;
+}
+
+.margin-l {
+    margin-left: auto;
+}
+
+.margin-r {
+    margin-right: auto;
+}
+
+.pr-10 {
+    padding-right: 10px;
+}
+
+.bg-red {
+    background: red;
+}
+
+.bg-yellow {
+    background: yellow;
+}
+
+.bg-blue {
+    background: blue;
+}
+
+.bg-black {
+    background: black;
+}
+
+.bg-salmon {
+    background: salmon;
+}
+
+.bg-white {
+    background: white;
+}
+
+.h-50 {
+    height: 50px;
+}
+
+.h-75 {
+    height: 75px;
+}
+
+.h-200 {
+    height: 200px;
+}
+
+.text-white {
+    color: white;
+}
+
+.text-salmon {
+    color: salmon;
+}
+
+.text-center {
+    text-align: center;
+}
+
+@media screen and (max-width: 920px) {
+    .w-m-100 {
+        width: 100%;
+    }
+}
