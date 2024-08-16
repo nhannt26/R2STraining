@@ -1,0 +1,73 @@
+a {
+  text-decoration: none;
+  color: #101010;
+}
+
+.header {
+  background: #353535;
+}
+
+.social {
+  margin-right: auto;
+}
+
+.signin {
+  border-left: 1px solid white;
+  border-right: 1px solid white;
+}
+
+.logo {
+  margin-right: auto;
+}
+
+.solution {
+  background-image: url("/Ngay2/BaseHeader.png");
+  /* background: #127BBE; */
+}
+
+.start {
+  background: none;
+}
+
+.info {
+  background: #127BBE;
+  width: 30%;
+  margin-left: auto;
+}
+
+.find {
+  background: #F1F4F5;
+}
+
+.find>a {
+  margin-right: auto;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.service {
+  border: 1px solid #D3DDE0;
+  width: calc(100%/3);
+}
+
+.service>span {
+  background-color: #127BBE;
+  width: 62px;
+  height: 63px;
+}
+
+.footer {
+  background: #353535;
+}
+
+.more {
+  margin-right: auto;
+}
+
+@media screen and (max-width: 769px) {
+  .w-m-100 {
+    width: 100%;
+  }
+}
