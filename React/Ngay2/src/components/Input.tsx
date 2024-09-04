@@ -1,6 +1,7 @@
 /** @format */
-import { memo, forwardRef } from 'react';
-import '../components/input.css'
+import { memo, forwardRef, useState } from 'react';
+import TextField from '@mui/material/TextField';
+import { inputStyle } from './style';
 
 type Props = {
   label: string;
@@ -13,19 +14,30 @@ type Props = {
 const Input = forwardRef<HTMLInputElement, Props>(
   ({ label, type = 'text', value = '', onChange = () => { }, error }, ref) => {
     // console.log('render ', label);
+    const [currentValue, setCurrentValue] = useState('')
     return (
-      <div>
-        <label htmlFor={label}>{label}</label>
-        <input
-          ref={ref}
-          id={label}
-          type={type}
-          defaultValue={''} // ref - uncontrolled component
-        // value={value} // controlled component
-        // onChange={(event) => onChange(event.target.value, type)}
-        />
-        {error && <p>{error}</p>}
-      </div>
+      <TextField
+        label={label}
+        defaultValue={currentValue}
+        onChange={(event) => setCurrentValue(event.target.value)}
+        error={!!error}
+        helperText={error}
+        type={type}
+        style={inputStyle}
+        ref={ref}
+      />
+      // <div>
+      //   <label htmlFor={label}>{label}</label>
+      //   <input
+      //     ref={ref}
+      //     id={label}
+      //     type={type}
+      //     defaultValue={''} // ref - uncontrolled component
+      //   // value={value} // controlled component
+      //   // onChange={(event) => onChange(event.target.value, type)}
+      //   />
+      //   {error && <p style={{ color: 'red' }}>{error}</p>}
+      // </div>
     );
   }
 );

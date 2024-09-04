@@ -1,6 +1,7 @@
 /** @format */
 import { useState, useCallback, useRef } from 'react';
 import Input from '../components/Input';
+import { Box, Button } from '@mui/material';
 
 const Login = () => {
   const [username, setUsername] = useState(''); // controlled component
@@ -15,20 +16,8 @@ const Login = () => {
   // const usernameRef = useRef<HTMLInputElement>(null); 
   // const passwordRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = useCallback(
-    (event: { preventDefault: any }) => {
-      // console.log('usernameRef ', usernameRef);
-      // console.log('passwordRef ', passwordRef);
+  const handleSubmit = useCallback((event: { preventDefault: any }) => {
       event.preventDefault();
-      // console.log('username ', username);
-      // console.log('password ', password);
-      // if (usernameRef.current && passwordRef.current) {
-      //   const username = usernameRef.current.value;
-      //   const password = passwordRef.current.value;
-      //   console.log('username value ', username);
-      //   console.log('password value ', password);
-      // }
-
       if (inputRefs.current.username && inputRefs.current.password) {
         const username = inputRefs.current.username.value;
         const password = inputRefs.current.password.value;
@@ -76,7 +65,19 @@ const Login = () => {
   );
 
   return (
-    <form onSubmit={handleSubmit}>
+    <Box
+      component='form'
+      onSubmit={handleSubmit}
+      style={{
+        margin: 'auto',
+        border: '1px solid #c3c3c3',
+        borderRadius: '5px',
+        background: 'white',
+        width: '400px',
+        padding: '20px',
+
+      }}
+    >
       <Input
         label='Username'
         value={username}
@@ -93,8 +94,15 @@ const Login = () => {
         ref={(element) => (inputRefs.current.password = element)}
         error={passwordError}
       />
-      <button type='submit'>Login</button>
-    </form>
+      <Button
+        variant='contained'
+        disableElevation
+        type='submit'
+        style={{ marginTop: '20px' }}>
+        Login
+      </Button>
+      {/* <button type='submit'>Login</button> */}
+    </Box>
   );
 };
 
