@@ -2,12 +2,17 @@
 import { useState, useCallback, useRef } from 'react';
 import Input from '../components/Input';
 import { Box, Button } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { validateForm } from '../utils/validation';
 
 const Login = () => {
   const [username, setUsername] = useState(''); // controlled component
   const [password, setPassword] = useState('');
-  const [usernameError, setUsernameError] = useState('')
-  const [passwordError, setPasswordError] = useState('')
+  const dispatch = useDispatch()
+  const [errorMsg, setErrorMsg] = useState({
+    username: '',
+    password: '',
+  })
   const inputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({
     username: null,
     password: null,
@@ -17,41 +22,20 @@ const Login = () => {
   // const passwordRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = useCallback((event: { preventDefault: any }) => {
-      event.preventDefault();
-      if (inputRefs.current.username && inputRefs.current.password) {
-        const username = inputRefs.current.username.value;
-        const password = inputRefs.current.password.value;
+    event.preventDefault();
+    if (inputRefs.current.username && inputRefs.current.password) {
+      const username = inputRefs.current.username.value;
+      const password = inputRefs.current.password.value;
+      console.log('username ', username);
+      console.log('password ', password);
+      const errorMsg = validateForm(username, password)
+      setErrorMsg(errorMsg)
 
-        let isValid = true;
+      if (!errorMsg.username && !errorMsg.password) {
 
-        if (!username) {
-          setUsernameError('Username is required')
-          isValid = false
-        } else {
-          setUsernameError('')
-        }
-
-        if (!password) {
-          setPasswordError('Password is required');
-          isValid = false
-        } else if (password.length < 8) {
-          setPasswordError('Password must be at least 8 characters long');
-          isValid = false
-        } else {
-          setPasswordError('')
-        }
-
-        if (isValid) {
-          console.log('username value ', username);
-          console.log('password value ', password);
-        }
-
-        // validate
       }
-      // console.log('inputRefs ', inputRefs);
-    },
-    []
-  );
+    }
+  }, []);
 
   const handleChangeData = useCallback(
     (value: string, type: string) => {
@@ -65,44 +49,46 @@ const Login = () => {
   );
 
   return (
-    <Box
-      component='form'
-      onSubmit={handleSubmit}
-      style={{
-        margin: 'auto',
-        border: '1px solid #c3c3c3',
-        borderRadius: '5px',
-        background: 'white',
-        width: '400px',
-        padding: '20px',
+    <div className='app'>
+      <Box
+        component='form'
+        onSubmit={handleSubmit}
+        style={{
+          margin: 'auto',
+          border: '1px solid #c3c3c3',
+          borderRadius: '5px',
+          background: 'white',
+          width: '400px',
+          padding: '20px',
 
-      }}
-    >
-      <Input
-        label='Username'
-        value={username}
-        onChange={handleChangeData} // create new arrow function
-        ref={(element) => (inputRefs.current.username = element)}
-        error={usernameError}
-      />
-      <Input
-        label='Password'
-        type='password'
-        value={password}
-        onChange={handleChangeData}
-        // ref={passwordRef}
-        ref={(element) => (inputRefs.current.password = element)}
-        error={passwordError}
-      />
-      <Button
-        variant='contained'
-        disableElevation
-        type='submit'
-        style={{ marginTop: '20px' }}>
-        Login
-      </Button>
-      {/* <button type='submit'>Login</button> */}
-    </Box>
+        }}
+      >
+        <Input
+          label='Username'
+          value={username}
+          onChange={handleChangeData} // create new arrow function
+          ref={(element) => (inputRefs.current.username = element)}
+          error={errorMsg.username}
+        />
+        <Input
+          label='Password'
+          type='password'
+          value={password}
+          onChange={handleChangeData}
+          // ref={passwordRef}
+          ref={(element) => (inputRefs.current.password = element)}
+          error={errorMsg.password}
+        />
+        <Button
+          variant='contained'
+          disableElevation
+          type='submit'
+          style={{ marginTop: '20px' }}>
+          Login
+        </Button>
+        {/* <button type='submit'>Login</button> */}
+      </Box>
+    </div>
   );
 };
 
