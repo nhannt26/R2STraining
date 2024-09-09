@@ -1,14 +1,21 @@
 /** @format */
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import Input from '../components/Input';
 import { Box, Button } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { validateForm } from '../utils/validation';
+import { LOGIN } from '../store/action';
+import { Navigate, useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
   const [username, setUsername] = useState(''); // controlled component
   const [password, setPassword] = useState('');
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const auth = useSelector((state: any) => state.auth)
+  console.log(auth);
+  
   const [errorMsg, setErrorMsg] = useState({
     username: '',
     password: '',
@@ -21,6 +28,12 @@ const Login = () => {
   // const usernameRef = useRef<HTMLInputElement>(null); 
   // const passwordRef = useRef<HTMLInputElement>(null);
 
+  // useEffect(() => {
+  //   if (auth.isLoggedIn) {
+  //     navigate('/')
+  //   }
+  // })
+
   const handleSubmit = useCallback((event: { preventDefault: any }) => {
     event.preventDefault();
     if (inputRefs.current.username && inputRefs.current.password) {
@@ -32,7 +45,11 @@ const Login = () => {
       setErrorMsg(errorMsg)
 
       if (!errorMsg.username && !errorMsg.password) {
-
+        dispatch({
+          type: LOGIN,
+          username,
+          password,
+        })
       }
     }
   }, []);
@@ -47,6 +64,10 @@ const Login = () => {
     },
     [setPassword]
   );
+
+if (auth.isLoggedIn) {
+  return <Navigate to='/' replace={true}/>
+}
 
   return (
     <div className='app'>
