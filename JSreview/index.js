@@ -79,3 +79,7 @@ function formatCurrency(amount) {
 
 console.log(formatCurrency(100000));
 console.log(formatCurrency(10000));
+
+const number = 10000000;
+const formattedCurrency = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+console.log(formattedCurrency);
