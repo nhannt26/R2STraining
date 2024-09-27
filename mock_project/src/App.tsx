@@ -9,6 +9,10 @@ import Root from './pages/Root';
 
 const router = createBrowserRouter([
   {
+    path: '/login',
+    element: <Login />
+  },
+  {
     path: '/',
     element: <Root />,
     children: [
@@ -17,19 +21,15 @@ const router = createBrowserRouter([
         element: <ProductLists />
       },
       {
-        path: '/category',
+        path: '/categories',
         element: <Categories />
       },
       {
-        path: '/color',
+        path: '/colors',
         element: <Colors />
       },
     ]
   },
-  {
-    path: '/login',
-    element: <Login />
-  }
 ])
 
 function App() {

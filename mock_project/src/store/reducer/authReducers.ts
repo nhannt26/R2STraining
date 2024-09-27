@@ -2,16 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { LOGIN } from './../action'
 
 const login = createAsyncThunk('login', () => {
-	// fetch /auth
-	// const auth = {}
-	// compare
-	
 	return null
-	// Challenge 14:
-	/**
-	 * install json server
-	 * implement login
-	 */
 })
 
 const initialState = {
@@ -39,13 +30,6 @@ const authSlice = createSlice({
 			state.isLoggedIn = false
 			state.error = 'Username or password is not correct'
 		})
-		// builder.addCase(''posts/fetchListPosts_REQUESTED', () => {
-
-		// })
-
-		// REQUEST -> loading
-		// SUCCEED -> update data -> !loading
-		// FAILED -> update
 	},
 })
 
