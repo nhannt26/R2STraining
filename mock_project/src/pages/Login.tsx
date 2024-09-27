@@ -1,5 +1,5 @@
 /** @format */
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useMemo } from 'react';
 // import { useFormStatus } from 'react-dom'; // TODO: Double check useFormStatus
 import { Input, Button } from '../components';
 import { validateForm } from './../utils/validation';
@@ -49,6 +49,15 @@ const Login = () => {
     }
   }, []); // [] didmount
 
+  const passErrMsg = useMemo(() => {
+    if (errorMsgs.password) return errorMsgs.password
+    if (inputRefs.current.username && inputRefs.current.password){
+      const username = inputRefs.current.username.value;
+      const password = inputRefs.current.password.value;
+      return username && password && !auth.isLoggedIn ? 'Username or password is incorrect' : ''
+    }
+  }, [auth.isLoggedIn, errorMsgs.password])
+
   if (auth.isLoggedIn) {
     return <Navigate to='/' replace={true} />;
   }
@@ -67,7 +76,7 @@ const Login = () => {
           type='password'
           // ref={passwordRef}
           ref={(element) => (inputRefs.current.password = element)}
-          error={errorMsgs.password}
+          error={passErrMsg}
         />
         <Button label={'Login'} />
       </Box>
