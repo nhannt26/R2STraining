@@ -1,7 +1,11 @@
-import { ChangeEvent, useCallback, useState } from "react";
-import { DELETE_POST, EDIT_POST } from "../store/actions";
-import { AppDispatch } from "../store";
-type InputField = "body" | "author";
+/** @format */
+
+import { useState, useCallback, ChangeEvent } from 'react';
+import { EDIT_POST } from './../store/actions';
+import { AppDispatch } from '../store';
+
+type InputField = 'body' | 'author';
+
 export interface PostModel {
   title: string;
   body: string;
@@ -9,12 +13,14 @@ export interface PostModel {
   userId: number;
   name?: string;
 }
+
 const useEditingPost = (post: PostModel, dispatch: AppDispatch) => {
-  const [editingField, setEditingField] = useState<InputField | null>(null);
+  const [editingField, setEdingField] = useState<InputField | null>(null);
   const [changingInput, setChangingInput] = useState({
     author: post.name,
     body: post.body,
-  });
+  }); // mounted
+
   const handleChangeInput = useCallback(
     (event: ChangeEvent<HTMLInputElement>, field: InputField) => {
       setChangingInput((prevState) => ({
@@ -23,7 +29,6 @@ const useEditingPost = (post: PostModel, dispatch: AppDispatch) => {
         body: post.body,
         [field]: event.target.value,
       }));
-      // submit post
     },
     [post.name, post.body]
   );
@@ -34,21 +39,16 @@ const useEditingPost = (post: PostModel, dispatch: AppDispatch) => {
       postId: post.id,
       userId: post.userId,
     });
-    setEditingField(null);
-  }, [dispatch, changingInput, post.id, setEditingField, post.userId]);
-  const handleDelete = useCallback(() => {
-    dispatch({
-      type: DELETE_POST,
-      postId: post.id,
-    });
-  }, [dispatch, post.id]);
+    setEdingField(null);
+  }, [dispatch, changingInput, post.id, setEdingField, post.userId]);
+
   return {
     editingField,
     changingInput,
-    setEditingField,
+    setEdingField,
     handleChangeInput,
     handleSave,
-    handleDelete
-  }
+  };
 };
+
 export default useEditingPost;

@@ -13,10 +13,9 @@ const Post = ({ post }: Props) => {
   const {
     editingField,
     changingInput,
-    setEditingField,
+    setEdingField,
     handleChangeInput,
     handleSave,
-    handleDelete
   } = useEditingPost(post, dispatch);
 
   return (
@@ -28,6 +27,7 @@ const Post = ({ post }: Props) => {
         {editingField === 'body' ? (
           <>
             <input
+              data-testid='bodyInput'
               type='text'
               value={changingInput[editingField]}
               onChange={(e) => handleChangeInput(e, 'body')}
@@ -37,7 +37,7 @@ const Post = ({ post }: Props) => {
         ) : (
           <p
             onDoubleClick={() => {
-              setEditingField('body');
+              setEdingField('body');
             }}>
             {post.body}
           </p>
@@ -47,6 +47,7 @@ const Post = ({ post }: Props) => {
         <>
           <input
             type='text'
+            data-testid='authorInput'
             value={changingInput[editingField]}
             onChange={(e) => handleChangeInput(e, 'author')}
           />
@@ -55,14 +56,14 @@ const Post = ({ post }: Props) => {
       ) : (
         post.name && (
           <i
+            data-testid='author'
             onDoubleClick={() => {
-              setEditingField('author');
+              setEdingField('author');
             }}>
             Author: {post.name}
           </i>
         )
       )}
-      <button onClick={handleDelete}>Delete</button>
     </div>
   );
 };

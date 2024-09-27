@@ -1,4 +1,4 @@
-export const validateForm = function(username: string, password: string) {
+export const validateForm = function(username?: string, password?: string) {
 	const errors = {
 		username: '',
 		password: ''
@@ -18,3 +18,5 @@ export const validateForm = function(username: string, password: string) {
 
 	return errors
 }
+
+// Challenge 17: write unit test for validateForm function

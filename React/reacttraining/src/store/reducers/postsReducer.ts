@@ -46,20 +46,17 @@ const postsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchListPosts.pending, (state, action) => {
+        console.log('1', state.data)
         state.loading = 'loading';
-        // console.log(state.ids);
-        
       })
       .addCase(fetchListPosts.fulfilled, (state, action) => {
         const posts = action.payload?.posts || [];
         if (!posts.length) return;
         const postObj: PostsDataObject = {};
-        // console.log(state.data);
-        
+        console.log('2', state.data)
         const ids = posts.reduce(
           (allIds: Array<PostModel['id']>, post: PostModel) => {
             if (!state.data[post.id]) {
-              
               allIds.push(post.id);
             }
             postObj[post.id] = post;

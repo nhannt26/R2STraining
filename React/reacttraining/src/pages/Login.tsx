@@ -1,14 +1,13 @@
 /** @format */
 import { useState, useCallback, useRef } from 'react';
 // import { useFormStatus } from 'react-dom'; // TODO: Double check useFormStatus
-import { Input } from '../components';
+import { Input, Button } from '../components';
 import { validateForm } from './../utils/validation';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGIN } from './../store/actions';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { boxStyle } from './style';
+import { boxStyle } from './styles';
 
 const Login = () => {
   const [username, setUsername] = useState(''); // controlled component
@@ -94,13 +93,7 @@ const Login = () => {
           ref={(element) => (inputRefs.current.password = element)}
           error={errorMsgs.password}
         />
-        <Button
-          variant='contained'
-          disableElevation
-          type='submit'
-          style={{ marginTop: '20px' }}>
-          Login
-        </Button>
+        <Button label={'Login'} />
       </Box>
     </div>
   );

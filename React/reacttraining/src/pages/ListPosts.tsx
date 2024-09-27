@@ -111,6 +111,20 @@ function ListPosts() {
 
 export default ListPosts;
 
+// Challenge: 9
+/**
+ * const posts = [post1, post2, post3];
+ * when clicking at a post in the list -> this post should be moved to the top of the list
+ * todo:
+ * 1. js function handles changing index of post
+ * 2. render UI list post + click event
+ */
+
+// Challenge 12:
+/**
+ * Configure store with redux/toolkit
+ */
+
 // Challenge 16:
 /**
  * 1. debounce
