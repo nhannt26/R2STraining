@@ -1,33 +1,33 @@
 function Counter() {
   let count = 0;
-  const increasement = () => {
+  const increment = () => {
     count++;
-    console.log("count in", count);
+    // console.log("count in", count);
   };
-  const decreasement = () => {
+  const decrement = () => {
     count--;
-    console.log("count de", count);
+    // console.log("count de", count);
   };
   const reset = () => {
     count = 0;
-    console.log("reset", count);
+    // console.log("reset", count);
   };
   return {
-    increasement,
-    decreasement,
+    increment,
+    decrement,
     reset,
   };
 }
 const counter = Counter();
-counter.increasement();
-counter.increasement();
-counter.increasement();
-counter.decreasement();
+counter.increment();
+counter.increment();
+counter.increment();
+counter.decrement();
 const TodoList = (function () {
   const tasks = [];
   function renderTask() {
     tasks.forEach((task) => {
-      console.log(`Task ${task.id}: ${task.value}`);
+      // console.log(`Task ${task.id}: ${task.value}`);
     });
   }
   function addTasks(value) {
@@ -55,7 +55,7 @@ TodoList.renderTask();
 function rateLimiter(fn, limit) {
   let lastCall = 0;
   return function (...args) {
-    console.log('args', args);
+    // console.log('args', args);
     const now = Date.now();
     if (now - lastCall >= limit) {
       lastCall = now;
@@ -64,7 +64,38 @@ function rateLimiter(fn, limit) {
   };
 }
 function clickRate (date, date2) {
-  console.log(`click ### ${date.getDate()} ${date2.getDate()}`);
+  // console.log(`click ### ${date.getDate()} ${date2.getDate()}`);
 }
 const handleRateLimit = rateLimiter(clickRate, 2000);
 handleRateLimit(new Date('2024-02-01'), new Date('2024-02-02'))
+
+function merge(arr1, m, arr2, n) {
+  let i = m - 1; // Index for arr1
+  let j = n - 1; // Index for arr2
+  let k = m + n - 1; // Index for merged array
+
+  while (i >= 0 && j >= 0) {
+    if (arr1[i] > arr2[j]) {
+      arr1[k] = arr1[i];
+      i--;
+    } else {
+      arr1[k] = arr2[j];
+      j--;
+    }
+    k--;
+  }
+
+  // If there are remaining elements in arr2, copy them to arr1
+  while (j >= 0) {
+    arr1[k] = arr2[j]; 
+    j--;
+    k--; 
+  }
+  return arr1;
+}
+
+// Example usage
+const array1 = [1, 2, 7, 0, 0, 0, 0, 0];
+const array2 = [1, 1, 3, 7, 7];
+
+console.log(merge(array1, 3, array2, 5)); // Output: [1, 1, 1, 2, 3, 7, 7, 7]
