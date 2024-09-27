@@ -1,7 +1,7 @@
 {
   "auth": {
     "email": "admin@gmail.com",
-    "password": "123456"
+    "password": "123456789"
   },
   "categories": [
     {
@@ -46,7 +46,7 @@
   "products": [
     {
       "id": "1",
-      "name": "T-shirt long sleeve updated",
+      "name": "T-shirt long sleeve",
       "available": 23,
       "sold": 10,
       "categoryId": 1,
@@ -54,7 +54,20 @@
         1,
         4
       ],
-      "price": 330000
+      "price": 300000
+    },
+    {
+      "id": "2",
+      "name": "Trouser with tie PUT",
+      "available": 5,
+      "sold": 2,
+      "categoryId": 1,
+      "colors": [
+        1,
+        4,
+        5
+      ],
+      "price": 450000
     },
     {
       "id": "3",

@@ -14,7 +14,7 @@ export async function fetchJson(url: string) {
 export async function updateJson(url: string, body: any, method: 'PUT' | 'POST' | 'PATCH') {
   try {
     const res = await fetch(url, {
-      method,
+      method: method || 'POST',
       body: JSON.stringify(body),
     });
 
