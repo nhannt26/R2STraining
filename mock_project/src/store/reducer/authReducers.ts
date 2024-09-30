@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { LOGIN } from './../action'
 import { fetchJson } from "../api";
 
-const BASE_URL = 'http://localhost:5000'
+export const BASE_URL = 'http://localhost:5000'
 
 export const login = createAsyncThunk(
   'login',
@@ -36,11 +36,11 @@ const authSlice = createSlice({
 				state.isLoggedIn = true
 			} else {
 				state.isLoggedIn = false
+				state.error = 'Username or password is not correct'
 			}
 		})
 		builder.addCase(login.rejected, (state, action) => {
 			state.isLoggedIn = false
-			state.error = 'Username or password is not correct'
 		})
 	},
 })

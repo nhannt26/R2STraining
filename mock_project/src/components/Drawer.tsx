@@ -5,16 +5,17 @@ import { ColorLens } from "@mui/icons-material";
 import { Outlet, useNavigate } from "react-router-dom";
 import { drawerStyles } from "./style";
 
+const menuItems = [
+  { text: "Products", route: "/products", icon: <ShoppingCartIcon /> },
+  { text: "Categories", route: "/categories", icon: <ListIcon /> },
+  { text: "Colors", route: "/colors", icon: <ColorLens /> },
+];
+
 const Drawer = () => {
   const navigate = useNavigate()
   const handleNavigation = (route: string) => {
     navigate(route)
   }
-  const menuItems = [
-    { text: "Products", route: "/products", icon: <ShoppingCartIcon /> },
-    { text: "Categories", route: "/categories", icon: <ListIcon /> },
-    { text: "Colors", route: "/colors", icon: <ColorLens /> },
-  ];
   return (
     <div style={{ display: "flex" }}>
       <Box style={drawerStyles}>

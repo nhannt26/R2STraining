@@ -55,7 +55,7 @@ const Login = () => {
       const password = inputRefs.current.password.value;
       return username && password && !auth.isLoggedIn ? 'Username or password is incorrect' : ''
     }
-  }, [auth.isLoggedIn, errorMsgs.password])
+  }, [auth.isLoggedIn,errorMsgs.password])
 
   if (auth.isLoggedIn) {
     return <Navigate to='/' replace={true} />;

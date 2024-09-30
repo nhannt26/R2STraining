@@ -1,24 +1,10 @@
-import { Table, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-
-interface product {
-  id: number,
-  name: string,
-  available: number,
-  sold: number,
-  category: string,
-  colors: string,
-  price: number
-}
-
-const productData = [
-
-]
+import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
 const Products = () => {
   return (
     <TableContainer>
       <Table>
-      <TableHead>
+        <TableHead>
           <TableRow>
             <TableCell>No</TableCell>
             <TableCell>Name</TableCell>
@@ -30,6 +16,15 @@ const Products = () => {
             <TableCell>Action</TableCell>
           </TableRow>
         </TableHead>
+        <TableBody>
+
+          <TableRow>
+            <TableCell></TableCell>
+            <TableCell>
+              <IconButton></IconButton>
+            </TableCell>
+          </TableRow>
+        </TableBody>
       </Table>
     </TableContainer>
   );

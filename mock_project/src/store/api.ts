@@ -18,7 +18,7 @@ export async function updateJson(url: string, body: any, method: 'PUT' | 'POST' 
       body: JSON.stringify(body),
     });
 
-    if (res.ok) {
+    if (res.status === 200) {
       const data = await res.json();
 
       return data;
@@ -35,7 +35,7 @@ export async function deleteJson(url: string, id: string) {
       method: 'DELETE',
     });
 
-    if (res.ok) {
+    if (res.status === 200) {
       console.log('JSON object deleted successfully');
     } else {
       const errorData = await res.json();
