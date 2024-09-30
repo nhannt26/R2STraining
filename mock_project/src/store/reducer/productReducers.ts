@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { fetchJson } from "../api";
-import { BASE_URL } from "./authReducers";
+import { BASE_URL } from "../../utils/url";
 
 interface Product {
   id: number;
@@ -20,11 +20,19 @@ export const product = createAsyncThunk(
   }
 )
 
-const initialState = {
-  product: [],
-  loading: false,
-  error: null
+interface ProductState {
+  entities: Record<number, Product>;
+  ids: number[];
+  status: "idle" | "loading" | "succeeded" | "failed";
+  error: string | null;
 }
+
+const initialState: ProductState = {
+  entities: {},
+  ids: [],
+  status: "idle",
+  error: null,
+};
 
 const productSlice = createSlice({
   name: 'products',
@@ -32,15 +40,18 @@ const productSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder.addCase(product.pending, (state) => {
-      state.loading = true;
-      state.error = null
+      state.status = 'loading';
     })
     builder.addCase(product.fulfilled, (state, action) => {
-      state.loading = false;
-      state.product = action.payload
+      state.status = 'succeeded';
+      const products: Product[] = action.payload
+      state.ids = products.map((product) => product.id)
+      products.forEach((product) => {
+        state.entities[product.id] = product;
+      });
     })
     builder.addCase(product.rejected, (state, action) => {
-      state.loading = false;
+      state.status = 'failed';
       // state.error = action.error.message
     })
   }
