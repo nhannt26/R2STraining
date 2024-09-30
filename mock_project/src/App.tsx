@@ -2,10 +2,10 @@ import React from 'react';
 import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Login from './pages/Login';
-import ProductLists from './pages/ProductLists';
 import Colors from './pages/Colors';
 import Categories from './pages/Categories';
-import Root from './pages/Root';
+import Drawer from './components/Drawer';
+import Products from './pages/Products';
 
 const router = createBrowserRouter([
   {
@@ -14,11 +14,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: <Root />,
+    element: <Drawer />,
     children: [
       {
-        path: '/product',
-        element: <ProductLists />
+        path: '/products',
+        element: <Products />
       },
       {
         path: '/categories',

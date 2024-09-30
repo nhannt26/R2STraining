@@ -3,3 +3,8 @@ export const inputStyles = {
   display: 'flex',
   flex: 1,
 };
+
+export const drawerStyles = {
+  width: '250px',
+  
+}

@@ -5,7 +5,6 @@ import { Input, Button } from '../components';
 import { validateForm } from './../utils/validation';
 import Box from '@mui/material/Box';
 import { useDispatch, useSelector } from 'react-redux';
-import { LOGIN } from '../store/action';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { boxStyle } from './style';
 import { login as handleLogin} from '../store/reducer/authReducers'
@@ -47,7 +46,7 @@ const Login = () => {
         dispatch(handleLogin({username, password}))
       }
     }
-  }, []); // [] didmount
+  }, [dispatch]); // [] didmount
 
   const passErrMsg = useMemo(() => {
     if (errorMsgs.password) return errorMsgs.password
@@ -69,12 +68,10 @@ const Login = () => {
           label='Username'
           ref={(element) => (inputRefs.current.username = element)}
           error={errorMsgs.username}
-          // ref={usernameRef}
         />
         <Input
           label='Password'
           type='password'
-          // ref={passwordRef}
           ref={(element) => (inputRefs.current.password = element)}
           error={passErrMsg}
         />
