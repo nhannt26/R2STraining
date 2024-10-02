@@ -3,11 +3,14 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { product } from "../store/reducer/productReducers";
+import CreateIcon from '@mui/icons-material/Create';
+import DeleteIcon from '@mui/icons-material/Delete';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 
 const Products = () => {
   const dispatch = useDispatch<AppDispatch>()
   // const state = useSelector((state: any) => console.log(state));  
-  const { entities: products = {}, ids: productIds = [], status, error } = useSelector((state: any) => state.product)
+  const { entities: products = {}, ids: productIds = [], status} = useSelector((state: any) => state.product)
 
   React.useEffect(() => {
     // console.log(status);
@@ -19,6 +22,10 @@ const Products = () => {
 
   return (
     <TableContainer>
+      <h1>Seller</h1>
+      <Button startIcon={<LibraryAddIcon />} variant="outlined" disableElevation color="success">
+        Add
+      </Button>
       <Table>
         <TableHead>
           {/* {['No', 'Name', 'Available', 'Sold', 'Category', 'Colors', 'Price', 'Action'].map((text) => (
@@ -52,18 +59,21 @@ const Products = () => {
               <TableCell>
                 <div>
                   <Button
-                    variant="contained"
+                    variant="outlined"
                     disableElevation
                     color="success"
                     type="submit"
+                    startIcon={<CreateIcon />}
+                    style={{ marginRight: "5px" }}
                   >
                     Edit
                   </Button>
                   <Button
-                    variant="contained"
+                    variant="outlined"
                     disableElevation
                     color="error"
                     type="submit"
+                    startIcon={<DeleteIcon />}
                   >
                     Delete
                   </Button>
