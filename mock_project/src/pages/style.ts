@@ -6,3 +6,10 @@ export const boxStyle = {
   width: '400px',
   padding: '20px',
 };
+
+export const totalField: React.CSSProperties = {
+  backgroundColor: "lightgrey",
+  textAlign: "center",
+  padding: "10px",
+  borderRadius: '5px'
+};

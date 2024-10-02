@@ -62,7 +62,7 @@
       "available": 5,
       "sold": 2,
       "categoryId": 1,
-      "colors": [
+      "colorIds": [
         1,
         4,
         5
@@ -75,7 +75,7 @@
       "available": 100,
       "sold": 7,
       "categoryId": 2,
-      "colors": [
+      "colorIds": [
         4,
         6
       ],
@@ -87,7 +87,7 @@
       "available": 30,
       "sold": 1,
       "categoryId": 3,
-      "colors": [
+      "colorIds": [
         8
       ],
       "price": 1450000
@@ -98,7 +98,7 @@
       "available": 5,
       "sold": 1,
       "categoryId": 2,
-      "colors": [
+      "colorIds": [
         3,
         2
       ],
