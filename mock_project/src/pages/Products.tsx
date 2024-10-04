@@ -2,14 +2,14 @@ import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRo
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store/store";
-import { product } from "../store/reducer/productReducers";
+import { fetchProduct } from "../store/reducer/productReducers";
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import { totalField } from "./style";
 import ProductModal from "../components/ProductModal";
-import { color } from "../store/reducer/colorReducers";
-import { category } from "../store/reducer/categoryReducers";
+import { fetchColor } from "../store/reducer/colorReducers";
+import { fetchCategory } from "../store/reducer/categoryReducers";
 
 const Products = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -23,10 +23,10 @@ const Products = () => {
     // console.log(status);
 
     if (status === "idle") {
-      dispatch(product());
+      dispatch(fetchProduct());
     }
-    dispatch(color())
-    dispatch(category())
+    dispatch(fetchColor())
+    dispatch(fetchCategory())
   }, [status, dispatch]);
 
   const getCategoryNameById = (id: string) => {

@@ -7,7 +7,7 @@ interface Category {
   name: string;
 }
 
-export const category = createAsyncThunk(
+export const fetchCategory = createAsyncThunk(
   'categories',
   async () => {
     const categoryInfo = await fetchJson(BASE_URL + '/categories')
@@ -34,10 +34,10 @@ const categorySlice = createSlice({
   initialState,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(category.pending, (state) => {
+    builder.addCase(fetchCategory.pending, (state) => {
       state.status = 'loading';
     })
-    builder.addCase(category.fulfilled, (state, action) => {
+    builder.addCase(fetchCategory.fulfilled, (state, action) => {
       state.status = 'succeeded';
       const categories: Category[] = action.payload
       state.ids = categories.map((category) => category.id)
@@ -45,7 +45,7 @@ const categorySlice = createSlice({
         state.entities[category.id] = category;
       });
     })
-    builder.addCase(category.rejected, (state, action) => {
+    builder.addCase(fetchCategory.rejected, (state, action) => {
       state.status = 'failed';
       // state.error = action.error.message
     })

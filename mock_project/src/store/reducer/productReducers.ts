@@ -12,7 +12,7 @@ interface Product {
   price: number;
 }
 
-export const product = createAsyncThunk(
+export const fetchProduct = createAsyncThunk(
   'products',
   async () => {
     const productInfo = await fetchJson(BASE_URL + '/products')
@@ -39,10 +39,10 @@ const productSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(product.pending, (state) => {
+    builder.addCase(fetchProduct.pending, (state) => {
       state.status = 'loading';
     })
-    builder.addCase(product.fulfilled, (state, action) => {
+    builder.addCase(fetchProduct.fulfilled, (state, action) => {
       state.status = 'succeeded';
       const products: Product[] = action.payload
       state.ids = products.map((product) => product.id)
@@ -50,7 +50,7 @@ const productSlice = createSlice({
         state.entities[product.id] = product;
       });
     })
-    builder.addCase(product.rejected, (state, action) => {
+    builder.addCase(fetchProduct.rejected, (state, action) => {
       state.status = 'failed';
       // state.error = action.error.message
     })

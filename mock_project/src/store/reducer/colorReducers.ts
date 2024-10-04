@@ -7,7 +7,7 @@ interface Color {
   name: string;
 }
 
-export const color = createAsyncThunk(
+export const fetchColor = createAsyncThunk(
   'colors',
   async () => {
     const colorInfo = await fetchJson(BASE_URL + '/colors')
@@ -34,10 +34,10 @@ const colorSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(color.pending, (state) => {
+    builder.addCase(fetchColor.pending, (state) => {
       state.status = 'loading';
     })
-    builder.addCase(color.fulfilled, (state, action) => {
+    builder.addCase(fetchColor.fulfilled, (state, action) => {
       // console.log(action);
       
       state.status = 'succeeded';
@@ -47,7 +47,7 @@ const colorSlice = createSlice({
         state.entities[color.id] = color;
       });
     })
-    builder.addCase(color.rejected, (state, action) => {
+    builder.addCase(fetchColor.rejected, (state, action) => {
       state.status = 'failed';
       // state.error = action.error.message
     })
