@@ -1,19 +1,32 @@
 import { Box, Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
 import React from "react";
+interface Product {
+  id?: number;
+  name: string;
+  available: number;
+  sold: number;
+  category: string;
+  colors: string;
+  price: number;
+}
 
-interface ProductModelProps {
+interface ProductModalProps {
   open: boolean;
   onClose: () => void;
-  onSave: (product: any) => void;
+  onSubmit: (product: Product) => void;
+  product?: Product | null;
+  categories: { id: number; name: string }[];
+  colors: { id: number; name: string }[];
+
 }
-const ProductModal: React.FC<ProductModelProps> = ({
+const ProductModal: React.FC<ProductModalProps> = ({
   open,
   onClose,
-  onSave,
+  onSubmit,
 }) => {
-  const [age, setAge] = React.useState("");
+  const [category, setCategory] = React.useState("");
   const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
+    setCategory(event.target.value as string);
   };
   return (
     <Dialog open={open} onClose={onClose}>
@@ -43,8 +56,8 @@ const ProductModal: React.FC<ProductModelProps> = ({
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={age}
-            label="Age"
+            value={category}
+            label="Category"
             onChange={handleChange}
           >
             <MenuItem value={10}>Cloth</MenuItem>

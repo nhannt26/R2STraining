@@ -75,7 +75,7 @@ const Login = () => {
           ref={(element) => (inputRefs.current.password = element)}
           error={passErrMsg}
         />
-        <Button label={'Login'} />
+        <Button label={'Login'} variant='contained' color='primary' />
       </Box>
     </div>
   );
