@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { boxStyle } from './style';
-import { login as handleLogin} from '../store/reducer/authReducers'
+import { login as handleLogin } from '../store/reducer/authReducers'
 import { AppDispatch } from '../store/store';
 
 const Login = () => {
@@ -16,11 +16,11 @@ const Login = () => {
   const auth = useSelector((state: any) => state.auth);
   // console.log('auth ', auth);
   const [errorMsgs, setErrorMsg] = useState({
-    username: '',
+    email: '',
     password: '',
   });
   const inputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({
-    username: null,
+    email: null,
     password: null,
   }); // uncontrolled component
 
@@ -28,34 +28,28 @@ const Login = () => {
     // console.log('submit ', inputRefs);
     event.preventDefault();
 
-    if (inputRefs.current.username && inputRefs.current.password) {
-      const username = inputRefs.current.username.value;
+    if (inputRefs.current.email && inputRefs.current.password) {
+      const email = inputRefs.current.email.value;
       const password = inputRefs.current.password.value;
-      // console.log('username ', username);
+      // console.log('email ', email);
       // console.log('password ', password);
-      const errorMsgs = validateForm(username, password);
+      const errorMsgs = validateForm(email, password);
       setErrorMsg(errorMsgs);
 
-      if (!errorMsgs.username && !errorMsgs.password) {
-        // dispatch Action
-        // dispatch({
-        //   type: LOGIN,
-        //   username,
-        //   password,
-        // });
-        dispatch(handleLogin({username, password}))
+      if (!errorMsgs.email && !errorMsgs.password) {
+        dispatch(handleLogin({ email, password }))
       }
     }
   }, [dispatch]); // [] didmount
 
   const passErrMsg = useMemo(() => {
     if (errorMsgs.password) return errorMsgs.password
-    if (inputRefs.current.username && inputRefs.current.password){
-      const username = inputRefs.current.username.value;
+    if (inputRefs.current.email && inputRefs.current.password) {
+      const email = inputRefs.current.email.value;
       const password = inputRefs.current.password.value;
-      return username && password && !auth.isLoggedIn ? 'Username or password is incorrect' : ''
+      return email && password && !auth.isLoggedIn ? 'Username or password is incorrect' : ''
     }
-  }, [auth.isLoggedIn,errorMsgs.password])
+  }, [auth.isLoggedIn, errorMsgs.password])
 
   if (auth.isLoggedIn) {
     return <Navigate to='/' replace={true} />;
@@ -66,8 +60,8 @@ const Login = () => {
       <Box component='form' onSubmit={handleSubmit} style={boxStyle}>
         <Input
           label='Username'
-          ref={(element) => (inputRefs.current.username = element)}
-          error={errorMsgs.username}
+          ref={(element) => (inputRefs.current.email = element)}
+          error={errorMsgs.email}
         />
         <Input
           label='Password'

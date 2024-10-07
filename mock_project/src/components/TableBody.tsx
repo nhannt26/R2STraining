@@ -8,12 +8,14 @@ const TableBody = ({
   colors,
   onEdit,
   onDelete,
-}:{products: any,
+}: {
+  products: any,
   productIds: any,
   categories: any,
   colors: any,
   onEdit: any,
-  onDelete: any,}) => {
+  onDelete: any,
+}) => {
   const getCategoryNameById = useCallback(
     (id: string) => {
       const category = categories[id];
@@ -39,26 +41,26 @@ const TableBody = ({
   );
 
   return (
-    // <>
-    //   {productIds.map((id: number, index: number) => {
-    //     const product = products[id];
-    //     const category = getCategoryNameById(product.categoryId);
-    //     const colorNames = getColorNamesById(product.colorIds || []);
+    <>
+      {productIds.map((id: number, index: number) => {
+        const product = products[id];
+        const category = getCategoryNameById(product.categoryId);
+        const colorNames = getColorNamesById(product.colorIds || []);
 
-    //     return (
-    //       <TableRowComponent
-    //         key={id}
-    //         product={product}
-    //         index={index}
-    //         category={category}
-    //         colors={colorNames}
-    //         onEdit={onEdit}
-    //         onDelete={onDelete}
-    //       />
-    //     );
-    //   })}
-    // </>
-  null);
+        return (
+          <TableRowComponent
+            key={id}
+            product={product}
+            index={index}
+            category={category}
+            colors={colorNames}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
+        );
+      })}
+    </>
+  );
 };
 
 export default TableBody;

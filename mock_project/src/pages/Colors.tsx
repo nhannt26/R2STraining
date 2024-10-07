@@ -2,6 +2,8 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../store/store";
 import { fetchColor } from "../store/reducer/colorReducers";
+import { Input } from "../components";
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
 const Colors = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -16,14 +18,28 @@ const Colors = () => {
   }, [status, dispatch]);
 
   return (
-    <div style={{width: "100%"}}>
-      <h1>Color list</h1>
-      {colorIds.map((id: string, index: number) => {
-        <div key={id}>
-          <div>{colors[id].name}</div>
-        </div>
-      })}
-    </div>
+    <>
+      <TableContainer>
+        <h1>Color list</h1>
+        <Table>
+          <TableHead>
+
+          </TableHead>
+          <TableBody>
+            {colorIds.map((id: string) => (
+              <TableRow>
+                <TableCell>{colors[id].name}</TableCell>
+                <TableCell>
+                  <Button variant="contained" disableElevation color="primary" type="submit">
+                    Add
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   )
 }
 

@@ -35,11 +35,13 @@ const TableRowComponent: React.FC<TableRowComponentProps> = ({
         style={{ display: "flex", justifyContent: "space-evenly" }}
       >
         <Button
+          variant="outlined"
           label="Edit"
           onClick={() => onEdit(product.id)}
           startIcon={<EditIcon />}
         />
         <Button
+          variant="outlined"
           label="Delete"
           startIcon={<DeleteIcon />}
           color="error"

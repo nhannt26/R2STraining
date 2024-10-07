@@ -1,15 +1,14 @@
-import { Box, Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
-import React from "react";
+import { Box, Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 interface Product {
   id?: number;
   name: string;
   available: number;
   sold: number;
-  category: string;
-  colors: string;
+  categoryId: number;
+  colorIds: number[];
   price: number;
 }
-
 interface ProductModalProps {
   open: boolean;
   onClose: () => void;
@@ -23,14 +22,77 @@ const ProductModal: React.FC<ProductModalProps> = ({
   open,
   onClose,
   onSubmit,
+  product,
+  categories,
+  colors,
 }) => {
-  const [category, setCategory] = React.useState("");
-  const handleChange = (event: SelectChangeEvent) => {
-    setCategory(event.target.value as string);
-  };
+  const [formData, setFormData] = useState<Product>({
+    name: "",
+    available: 0,
+    sold: 0,
+    categoryId: 0,
+    colorIds: [] as number[],
+    price: 0,
+  });
+  
+  useEffect(() => {
+    // Use optional chaining for safer access to nested properties
+    setFormData({
+      name: product?.name || "",
+      available: product?.available || 0,
+      sold: product?.sold || 0,
+      categoryId: product?.categoryId || 0,
+      colorIds: product?.colorIds || [], // Ensure colorIds is an empty array
+      price: product?.price || 0,
+    });
+  }, [product]);
+
+  const handleColorToggle = useCallback((colorId: number) => {
+    setFormData((pre) => {
+      const updatedColors = pre.colorIds.includes(colorId)
+        ? pre.colorIds.filter((id) => id !== colorId)
+        : [...pre.colorIds, colorId];
+      return { ...pre, colorIds: updatedColors };
+    });
+  }, []);
+
+  const handleSubmit = useCallback(() => {
+    // console.log("Submitting product:", formData);
+    onSubmit(formData);
+    onClose();
+  }, [formData, onSubmit, onClose]);
+
+  const categoryArray = Object.values(categories);
+    const renderedCategories = useMemo(() => {
+      return categoryArray.map((category) => (
+        <MenuItem key={category.id} value={category.id}>
+          {category.name}
+        </MenuItem>
+      ));
+    }, [categoryArray]);
+
+    const colorArray = Object.values(colors);
+    const renderedColors = useMemo(() => {
+      return colorArray.map((color) => (
+        <Button
+          key={color.id}
+          variant={
+            Array.isArray(formData.colorIds) &&
+            formData.colorIds.includes(color.id)
+              ? "contained"
+              : "outlined"
+          }
+          onClick={() => handleColorToggle(color.id)}
+          style={{ margin: "4px" }}
+        >
+          {color.name}
+        </Button>
+      ));
+    }, [colorArray, formData.colorIds, handleColorToggle]);
+
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Add New Product</DialogTitle>
+      <DialogTitle>{product ? "Edit product" : "Add new Product"}</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
@@ -41,6 +103,8 @@ const ProductModal: React.FC<ProductModalProps> = ({
           fullWidth
           variant="outlined"
           sx={{ marginTop: "10px", marginBottom: "10px" }}
+          value={formData.name}
+          onChange={(e) => setFormData({...formData, name: e.target.value})}
         />
         <TextField
           margin="dense"
@@ -50,24 +114,24 @@ const ProductModal: React.FC<ProductModalProps> = ({
           fullWidth
           variant="outlined"
           sx={{ marginTop: "10px", marginBottom: "10px" }}
+          value={formData.available}
+          onChange={(e) => setFormData({...formData, available: +e.target.value})}
         />
         <FormControl fullWidth sx={{ marginTop: "10px", marginBottom: "10px" }}>
           <InputLabel id="demo-simple-select-label">Category</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={category}
+            value={formData.categoryId}
             label="Category"
-            onChange={handleChange}
-          >
-            <MenuItem value={10}>Cloth</MenuItem>
-            <MenuItem value={20}>Bag</MenuItem>
-            <MenuItem value={30}>Accessory</MenuItem>
-          </Select>
+            onChange={(e) => setFormData({...formData, categoryId: +e.target.value})}
+            >
+            {renderedCategories} 
+         </Select>
         </FormControl>
         <Box sx={{ marginTop: "10px", marginBottom: "10px" }}>
           <Typography sx={{ color: "#6f6f6f" }}>Color</Typography>
-          <ButtonGroup
+          {/* <ButtonGroup
             variant="contained"
             aria-label="Basic button group"
             sx={{ marginTop: "10px" }}
@@ -75,7 +139,8 @@ const ProductModal: React.FC<ProductModalProps> = ({
             <Button>White</Button>
             <Button>Black</Button>
             <Button>Red</Button>
-          </ButtonGroup>
+          </ButtonGroup> */}
+          <Button>{renderedColors}</Button>
         </Box>
         <TextField
           margin="dense"
@@ -85,13 +150,13 @@ const ProductModal: React.FC<ProductModalProps> = ({
           fullWidth
           variant="outlined"
           sx={{ marginTop: "10px", marginBottom: "10px" }}
+          value={formData.price}
+          onChange={(e) => setFormData({...formData, price: +e.target.value})}
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="primary">
-          Cancel
-        </Button>
-        <Button color="primary">Add</Button>
+        <Button onClick={onClose} color="primary">Cancel</Button>
+        <Button onClick={handleSubmit} color="primary">{product ? "Update" : "Add"}</Button>
       </DialogActions>
     </Dialog>
   );

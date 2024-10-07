@@ -1,4 +1,4 @@
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Button, Table, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store/store";
@@ -8,6 +8,8 @@ import { totalField } from "./style";
 import ProductModal from "../components/ProductModal";
 import { fetchColor } from "../store/reducer/colorReducers";
 import { fetchCategory } from "../store/reducer/categoryReducers";
+import TableBody from "../components/TableBody";
+import ConfirmModal from "../components/ConfirmModal";
 
 const headers = [
   { text: "No" },
@@ -33,9 +35,9 @@ const Products = () => {
   const [modalMode, setModalMode] = useState<"add" | "edit">("add");
   const [productIdDelete, setProductIdDelete] = useState<number | null>(null);
 
-  // const handleUpdate = (product: any) => {
-  //   dispatch(updateProduct(product))
-  // }
+  const handleUpdate = (product: any) => {
+    dispatch(updateProduct(product))
+  }
 
   const handleDelete = (productId: any) => {
     setProductIdDelete(productId)
@@ -160,10 +162,20 @@ const Products = () => {
             onDelete={handleDelete} />
         </Table>
       </TableContainer>
+      <ConfirmModal
+        open={openConfirmModal}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmDelete}
+        title="Confirm Delete"
+        message="Do you want to delete this product?"
+      />
       <ProductModal
         open={openModal} 
         onClose={() => setOpenModal(false)} 
-        onSubmit={}
+        onSubmit={handleSave}
+        product={selectedProduct}
+        categories={categories || []}
+        colors={colors || []}
       />
     </>
 
