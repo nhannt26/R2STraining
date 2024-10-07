@@ -27,6 +27,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
   colors,
 }) => {
   const [formData, setFormData] = useState<Product>({
+    id: new Date().getTime(),
     name: "",
     available: 0,
     sold: 0,
@@ -34,10 +35,11 @@ const ProductModal: React.FC<ProductModalProps> = ({
     colorIds: [] as number[],
     price: 0,
   });
-  
+
   useEffect(() => {
     // Use optional chaining for safer access to nested properties
     setFormData({
+      id: product?.id || new Date().getTime(),
       name: product?.name || "",
       available: product?.available || 0,
       sold: product?.sold || 0,
@@ -63,32 +65,15 @@ const ProductModal: React.FC<ProductModalProps> = ({
   }, [formData, onSubmit, onClose]);
 
   const categoryArray = Object.values(categories);
-    const renderedCategories = useMemo(() => {
-      return categoryArray.map((category) => (
-        <MenuItem key={category.id} value={category.id}>
-          {category.name}
-        </MenuItem>
-      ));
-    }, [categoryArray]);
+  const renderedCategories = useMemo(() => {
+    return categoryArray.map((category) => (
+      <MenuItem key={category.id} value={category.id}>
+        {category.name}
+      </MenuItem>
+    ));
+  }, [categoryArray]);
 
-    const colorArray = Object.values(colors);
-    const renderedColors = useMemo(() => {
-      return colorArray.map((color) => (
-        <Button
-          key={color.id}
-          variant={
-            Array.isArray(formData.colorIds) &&
-            formData.colorIds.includes(color.id)
-              ? "contained"
-              : "outlined"
-          }
-          onClick={() => handleColorToggle(color.id)}
-          style={{ margin: "4px" }}
-        >
-          {color.name}
-        </Button>
-      ));
-    }, [colorArray, formData.colorIds, handleColorToggle]);
+  const colorArray = Object.values(colors);
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -104,7 +89,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
           variant="outlined"
           sx={{ marginTop: "10px", marginBottom: "10px" }}
           value={formData.name}
-          onChange={(e) => setFormData({...formData, name: e.target.value})}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
         />
         <TextField
           margin="dense"
@@ -115,7 +100,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
           variant="outlined"
           sx={{ marginTop: "10px", marginBottom: "10px" }}
           value={formData.available}
-          onChange={(e) => setFormData({...formData, available: +e.target.value})}
+          onChange={(e) => setFormData({ ...formData, available: +e.target.value })}
         />
         <FormControl fullWidth sx={{ marginTop: "10px", marginBottom: "10px" }}>
           <InputLabel id="demo-simple-select-label">Category</InputLabel>
@@ -124,23 +109,28 @@ const ProductModal: React.FC<ProductModalProps> = ({
             id="demo-simple-select"
             value={formData.categoryId}
             label="Category"
-            onChange={(e) => setFormData({...formData, categoryId: +e.target.value})}
-            >
-            {renderedCategories} 
-         </Select>
+            onChange={(e) => setFormData({ ...formData, categoryId: +e.target.value })}
+          >
+            {renderedCategories}
+          </Select>
         </FormControl>
         <Box sx={{ marginTop: "10px", marginBottom: "10px" }}>
           <Typography sx={{ color: "#6f6f6f" }}>Color</Typography>
-          {/* <ButtonGroup
-            variant="contained"
-            aria-label="Basic button group"
-            sx={{ marginTop: "10px" }}
-          >
-            <Button>White</Button>
-            <Button>Black</Button>
-            <Button>Red</Button>
-          </ButtonGroup> */}
-          <Button>{renderedColors}</Button>
+          {colorArray.map((color) => (
+            <Button
+              key={color.id}
+              variant={
+                Array.isArray(formData.colorIds) &&
+                  formData.colorIds.includes(color.id)
+                  ? "contained"
+                  : "outlined"
+              }
+              onClick={() => handleColorToggle(color.id)}
+              style={{ margin: "4px" }}
+            >
+              {color.name}
+            </Button>
+          ))};
         </Box>
         <TextField
           margin="dense"
@@ -151,7 +141,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
           variant="outlined"
           sx={{ marginTop: "10px", marginBottom: "10px" }}
           value={formData.price}
-          onChange={(e) => setFormData({...formData, price: +e.target.value})}
+          onChange={(e) => setFormData({ ...formData, price: +e.target.value })}
         />
       </DialogContent>
       <DialogActions>

@@ -2,7 +2,7 @@ import { Button, Table, TableCell, TableContainer, TableHead, TableRow } from "@
 import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store/store";
-import { addProduct, deleteProduct, fetchProduct, updateProduct } from "../store/reducer/productReducers";
+import { addProduct, deleteProduct, fetchProducts, updateProduct } from "../store/reducer/productReducers";
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import { totalField } from "./style";
 import ProductModal from "../components/ProductModal";
@@ -58,7 +58,7 @@ const Products = () => {
     // console.log(status);
 
     if (status === "idle") {
-      dispatch(fetchProduct());
+      dispatch(fetchProducts());
     }
     dispatch(fetchColor())
     dispatch(fetchCategory())

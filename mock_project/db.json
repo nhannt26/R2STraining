@@ -47,38 +47,26 @@
     {
       "id": "2",
       "name": "Trouser with tie PUT",
-      "available": 5,
+      "available": 12,
       "sold": 2,
       "categoryId": 1,
       "colorIds": [
-        1,
-        4,
-        5
+        "1"
       ],
       "price": 450000
     },
     {
       "id": "3",
       "name": "Backpack Elsa",
-      "available": 100,
+      "available": 125,
       "sold": 7,
       "categoryId": 2,
       "colorIds": [
-        4,
-        6
+        "1",
+        "4",
+        "6"
       ],
-      "price": 370000
-    },
-    {
-      "id": "4",
-      "name": "Silver necklace",
-      "available": 30,
-      "sold": 1,
-      "categoryId": 3,
-      "colorIds": [
-        8
-      ],
-      "price": 1450000
+      "price": 450000
     },
     {
       "id": "27c3",
@@ -110,6 +98,90 @@
       "categoryId": 0,
       "colorIds": [],
       "price": 0
+    },
+    {
+      "id": 4,
+      "name": "New",
+      "available": 200,
+      "sold": 0,
+      "categoryId": 3,
+      "colorIds": [
+        "4"
+      ],
+      "price": 230000
+    },
+    {
+      "id": 4,
+      "name": "New",
+      "available": 20,
+      "sold": 0,
+      "categoryId": 2,
+      "colorIds": [
+        "1"
+      ],
+      "price": 10000
+    },
+    {
+      "id": 4,
+      "name": "",
+      "available": 0,
+      "sold": 0,
+      "categoryId": 0,
+      "colorIds": [],
+      "price": 0
+    },
+    {
+      "id": "4",
+      "name": "New",
+      "available": 34,
+      "sold": 0,
+      "categoryId": 3,
+      "colorIds": [
+        "1",
+        "4"
+      ],
+      "price": 40000
+    },
+    {
+      "id": "4",
+      "name": "New",
+      "available": 30,
+      "sold": 0,
+      "categoryId": 3,
+      "colorIds": [
+        "1",
+        "6"
+      ],
+      "price": 230000
+    },
+    {
+      "id": "4",
+      "name": "New",
+      "available": 200,
+      "sold": 0,
+      "categoryId": 3,
+      "colorIds": [],
+      "price": 320000
+    },
+    {
+      "id": "4",
+      "name": "New",
+      "available": 34,
+      "sold": 0,
+      "categoryId": 3,
+      "colorIds": [
+        "1"
+      ],
+      "price": 40000
+    },
+    {
+      "id": "5",
+      "name": "New product",
+      "available": 40,
+      "sold": 0,
+      "categoryId": 0,
+      "colorIds": [],
+      "price": 234000
     }
   ]
 }
