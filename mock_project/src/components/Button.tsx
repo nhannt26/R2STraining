@@ -8,8 +8,9 @@ type Props = {
   startIcon?: React.ReactNode,
   color?: "inherit" | "primary" | "secondary" | "success" | "error" | "info" | "warning"
   variant?: "text" | "contained" | "outlined"
+  disabled?: boolean
 };
-const Button = ({ label, type = 'submit', onClick = () => {}, startIcon, color, variant }: Props) => (
+const Button = ({ label, type = 'submit', onClick = () => {}, startIcon, color, variant, disabled }: Props) => (
   <ButtonMU
     variant={variant}
     disableElevation
@@ -18,6 +19,7 @@ const Button = ({ label, type = 'submit', onClick = () => {}, startIcon, color, 
     startIcon={startIcon}
     color={color}
     style={{ marginTop: '20px' }}
+    disabled={disabled}
   >
     {label}
   </ButtonMU>

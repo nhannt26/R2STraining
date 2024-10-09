@@ -3,9 +3,11 @@ import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store/store";
-import { addCategory, deleteCategory, fetchCategory } from "../store/reducer/categoryReducers";
+import { addCategory, deleteCategory, fetchCategory, updateCategory } from "../store/reducer/categoryReducers";
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Notification from "../components/Notification";
+import ConfirmModal from "../components/ConfirmModal";
 
 const Categories = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -17,9 +19,10 @@ const Categories = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const [productCount, setProductCount] = useState<number>(0);
-  const [openCategoryModal, setOpenCategoryModal] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [open, setOpen] = useState(false)
+  const [isAdding, setIsAdding] = useState(false)
+  const [newCategoryName, setNewCategoryName] = useState("")
+  const [notification, setNotification] = useState<{ message: string; type: "success" | "error"; } | null>(null);
 
   React.useEffect(() => {
     // console.log(status);
@@ -43,26 +46,49 @@ const Categories = () => {
     setEditName(categories[id].name)
   }, [categories])
 
-  const handleSave = useCallback((id: string) => {
-    setEditId(null)
-  }, [])
+  const handleSave = useCallback(
+    (id: string) => {
+      // Early return to avoid unnecessary calculations if saving a new category
+      if (id === "new") {
+        const maxId =
+          categoryIds.length > 0 ? Math.max(...categoryIds.map(Number)) : 0;
+        const newCategory = {
+          id: (maxId + 1).toString(),
+          name: newCategoryName,
+        };
+        dispatch(addCategory(newCategory));
+        setIsAdding(false);
+        setNewCategoryName("");
+        setNotification({ message: "Category added successfully!", type: "success", });
+      }
+      // Efficiently update category name using spread syntax
+      dispatch(updateCategory({ id, name: editName }));
+      setEditId(null);
+      setNotification({ message: "Category updated successfully!", type: "success" });
+    },
+    // Optimized dependency array: Only include reactive values
+    [editName, newCategoryName, dispatch, categoryIds]
+  );
 
   const handleCancel = useCallback(() => {
     setEditId(null);
     setEditName("");
+    setIsAdding(false)
+    setNewCategoryName("")
   }, []);
 
   const handleDeleteClick = useCallback(
     (id: string) => {
-      setSelectedCategoryId(id);
-      const count = getProductCountByCategory(id);
+      const count = Array.isArray(products)
+        ? products.filter((product: any) => product.categoryId === id).length : 0;
       setProductCount(count);
+      setSelectedCategoryId(id);
       setOpenModal(true);
     },
-    [getProductCountByCategory]
+    [products]
   );
 
-  const handleCloseDialog = useCallback(() => {
+  const handleCloseModal = useCallback(() => {
     setOpenModal(false);
     setSelectedCategoryId(null);
   }, []);
@@ -72,32 +98,23 @@ const Categories = () => {
       console.log("Deleting category with ID:", selectedCategoryId);
       dispatch(deleteCategory(selectedCategoryId));
     }
-    handleCloseDialog();
-  }, [selectedCategoryId, dispatch, handleCloseDialog]);
+    handleCloseModal();
+  }, [selectedCategoryId, dispatch, handleCloseModal]);
 
   const handleAddCategory = () => {
-    setOpenCategoryModal(true);
+    setIsAdding(true);
   };
-
-  const handleSubmitCategory = useCallback(
-    (newCategory: any) => {
-      console.log("Adding new category:", newCategory);
-      const categoryToAdd = {
-        ...newCategory,
-        id: newCategory.id?.toString(),
-      };
-      const maxId =
-        categoryIds.length > 0 ? Math.max(...categoryIds.map(Number)) : 0;
-      categoryToAdd.id = (maxId + 1).toString();
-      dispatch(addCategory(categoryToAdd));
-      setOpenCategoryModal(false);
-    },
-    [categoryIds, dispatch]
-  );
 
   return (
     <>
       <TableContainer>
+        {notification && (
+          <Notification
+            message={notification.message}
+            type={notification.type}
+            onClose={() => setNotification(null)}
+          />
+        )}
         <h1>Category List</h1>
         <div>
           <Button
@@ -105,6 +122,7 @@ const Categories = () => {
             color="success"
             startIcon={<LibraryAddIcon />}
             onClick={handleAddCategory}
+            disabled={isAdding}
           >
             Add
           </Button>
@@ -114,6 +132,7 @@ const Categories = () => {
             <TableRow>
               <TableCell>No</TableCell>
               <TableCell>Name</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -134,7 +153,7 @@ const Categories = () => {
                     type="submit"
                     startIcon={<CreateIcon />}
                     style={{ marginRight: "5px" }}
-                    // onClick={handleOpen}
+                  // onClick={handleOpen}
                   >
                     Edit
                   </Button>
@@ -153,7 +172,13 @@ const Categories = () => {
           </TableBody>
         </Table>
       </TableContainer >
-      {/* <ProductModal open={open} onClose={handleClose}/> */}
+      <ConfirmModal
+        open={openModal}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmDelete}
+        title="Confirm Deletion"
+        message={`This category is being used by ${productCount} product(s). Are you sure you want to delete it?`}
+      />
     </>
   )
 }

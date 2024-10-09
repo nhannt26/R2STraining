@@ -100,7 +100,7 @@
       "price": 0
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "New",
       "available": 200,
       "sold": 0,
@@ -111,7 +111,7 @@
       "price": 230000
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "New",
       "available": 20,
       "sold": 0,
@@ -122,7 +122,7 @@
       "price": 10000
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "",
       "available": 0,
       "sold": 0,
@@ -179,8 +179,11 @@
       "name": "New product",
       "available": 40,
       "sold": 0,
-      "categoryId": 0,
-      "colorIds": [],
+      "categoryId": 3,
+      "colorIds": [
+        "3",
+        "4"
+      ],
       "price": 234000
     }
   ]

@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 interface Product {
   id?: number;
@@ -77,7 +77,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>{product ? "Edit product" : "Add new Product"}</DialogTitle>
+      <DialogTitle>{product ? "Add new Product" : "Edit product"}</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
@@ -146,7 +146,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="primary">Cancel</Button>
-        <Button onClick={handleSubmit} color="primary">{product ? "Update" : "Add"}</Button>
+        <Button onClick={handleSubmit} color="primary">{product ? "Add" : "Update"}</Button>
       </DialogActions>
     </Dialog>
   );
