@@ -25,21 +25,25 @@ const TableRowComponent: React.FC<TableRowComponentProps> = ({
   return (
     <TableRow>
       <TableCell>{index + 1}</TableCell>
-      <TableCell>{product.name}</TableCell>
+      <TableCell style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>
+        {product.name}
+      </TableCell>
       <TableCell>{product.available}</TableCell>
       <TableCell>{product.sold}</TableCell>
       <TableCell>{category}</TableCell>
       <TableCell>{colors}</TableCell>
-      <TableCell>{product.price.toLocaleString()}</TableCell>
+      <TableCell>
+        {product.price.toLocaleString().slice(0, 10) + (product.price.toLocaleString().length > 10 ? "..." : "")}
+      </TableCell>
       <TableCell
-        style={{ display: "flex", gap: "10px"}}
+        style={{ display: "flex", gap: "10px" }}
       >
         <Button
           variant="outlined"
           label="Edit"
           onClick={() => onEdit(product.id)}
           startIcon={<EditIcon />}
-          
+
         />
         <Button
           variant="outlined"

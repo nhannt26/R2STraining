@@ -53,9 +53,7 @@ const Products = () => {
   React.useEffect(() => {
     // console.log(status);
 
-    if (status === "idle") {
-      dispatch(fetchProducts());
-    }
+    dispatch(fetchProducts());
     dispatch(fetchColor())
     dispatch(fetchCategory())
   }, [status, dispatch]);

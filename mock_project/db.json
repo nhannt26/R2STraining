@@ -35,10 +35,6 @@
   ],
   "colors": [
     {
-      "id": "1",
-      "name": "white"
-    },
-    {
       "id": "2",
       "name": "yellow"
     },
@@ -59,16 +55,20 @@
       "name": "Blue"
     },
     {
-      "id": "1728619183440",
-      "name": "Gold"
-    },
-    {
       "id": "1728619191185",
       "name": "Green"
     },
     {
       "id": "1728619301384",
       "name": "Grey"
+    },
+    {
+      "id": "1728648397515",
+      "name": "Red"
+    },
+    {
+      "id": "1728648397516",
+      "name": "White"
     }
   ],
   "products": [
@@ -87,30 +87,6 @@
       "price": 450000
     },
     {
-      "id": "3",
-      "name": "Backpack ",
-      "available": 1250,
-      "sold": 7,
-      "categoryId": 2,
-      "colorIds": [
-        "1",
-        "4",
-        "6"
-      ],
-      "price": 450000
-    },
-    {
-      "id": "27c3",
-      "name": "New",
-      "available": 23,
-      "sold": 0,
-      "categoryId": 3,
-      "colorIds": [
-        "1"
-      ],
-      "price": 230000
-    },
-    {
       "id": "2da2",
       "name": "New",
       "available": 23,
@@ -120,37 +96,6 @@
         "2"
       ],
       "price": 220000
-    },
-    {
-      "id": "55b5",
-      "name": "",
-      "available": 0,
-      "sold": 0,
-      "categoryId": 0,
-      "colorIds": [],
-      "price": 0
-    },
-    {
-      "id": "4",
-      "name": "New",
-      "available": 200,
-      "sold": 0,
-      "categoryId": 3,
-      "colorIds": [
-        "4"
-      ],
-      "price": 230000
-    },
-    {
-      "id": "4",
-      "name": "New",
-      "available": 20,
-      "sold": 0,
-      "categoryId": 2,
-      "colorIds": [
-        "1"
-      ],
-      "price": 10000
     },
     {
       "id": "4",
@@ -218,7 +163,7 @@
       "price": 321000
     },
     {
-      "id": "5",
+      "id": "11",
       "name": "Iphone",
       "available": 400,
       "sold": 0,
@@ -230,27 +175,17 @@
       "price": 32000000
     },
     {
-      "id": "1728482538463",
-      "name": "Lenovo",
-      "available": 100,
-      "sold": 0,
-      "categoryId": 7,
+      "id": "1728655188814",
+      "name": "Product",
+      "available": 1235,
+      "sold": 57,
+      "categoryId": 4,
       "colorIds": [
-        "3"
+        "2",
+        "6",
+        "1728619191185"
       ],
-      "price": 20000000
-    },
-    {
-      "id": "11/10/2024",
-      "name": "Iphone",
-      "available": 400,
-      "sold": 0,
-      "categoryId": 6,
-      "colorIds": [
-        "1",
-        "3"
-      ],
-      "price": 32000000
+      "price": 1000000000000
     }
   ]
 }

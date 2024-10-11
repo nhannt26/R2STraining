@@ -2,6 +2,7 @@ import ButtonMU from '@mui/material/Button';
 import React from 'react';
 
 type Props = {
+  children?: React.ReactNode,
   label: string;
   onClick?: () => unknown;
   type?: 'submit' | 'button' | 'reset';

@@ -30,16 +30,17 @@ const TableBody = ({
         return "No colors available";
       } else if (colorIds.length === 1) {
         const colorName = colors[colorIds[0]]?.name;
-        return colorName ? colorName : "Unknown color";
+        return colorName || "";
       } else {
         return colorIds
-          .map((colorId) => colors[colorId]?.name || "Unknown")
+          .map((colorId) => colors[colorId]?.name || "")
+          .filter(Boolean)
           .join(", ");
       }
     },
     [colors]
   );
-
+  
   return (
     <>
       {productIds.map((id: number, index: number) => {

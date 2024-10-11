@@ -17,7 +17,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
     return (
       <TextField
         label={label}
-        value={value}
+        defaultValue={value}
         placeholder={placeholder}
         error={!!error}
         helperText={error}

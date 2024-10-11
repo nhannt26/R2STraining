@@ -104,7 +104,9 @@ const productSlice = createSlice({
         state.ids.push(newId);
       })
       .addCase(updateProduct.fulfilled, (state, action) => {
-        const updatedProduct: Product = action.payload;
+        console.log(action);
+        
+        const updatedProduct: Product = action.meta.arg;
         state.entities[updatedProduct.id.toString()] = updatedProduct;
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {

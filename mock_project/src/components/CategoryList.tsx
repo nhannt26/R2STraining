@@ -6,7 +6,6 @@ import Button from "./Button";
 interface CategoryListProps {
   categoryIds: string[];
   categories: Record<string, { name: string }>;
-  currentPage: number;
   editId: string | null;
   editName: string;
   isAdding: boolean;
