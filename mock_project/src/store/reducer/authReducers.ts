@@ -4,10 +4,10 @@ import { fetchJson } from "../api";
 import { BASE_URL } from "../../utils/url";
 
 export const login = createAsyncThunk(
-  'login',
-  async (userInfo: { username: string; password: string }) => {
+	'login',
+	async (userInfo: { email: string; password: string }) => {
 		const authInfo = await fetchJson(BASE_URL + '/auth')
-		return authInfo		
+		return authInfo
 	}
 );
 
@@ -27,15 +27,15 @@ const authSlice = createSlice({
 		})
 		builder.addCase(login.fulfilled, (state, action: any) => {
 			console.log(action);
-			
+
 			const formUserInfo = action.meta.arg
 			const authInfo = action.payload
-			
+
 			if (formUserInfo.email === authInfo.email && formUserInfo.password === authInfo.password) {
 				state.isLoggedIn = true
 			} else {
 				state.isLoggedIn = false
-				state.error = 'Username or password is not correct'
+				state.error = 'Email or password is not correct'
 			}
 		})
 		builder.addCase(login.rejected, (state) => {

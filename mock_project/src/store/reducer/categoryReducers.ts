@@ -1,23 +1,51 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchJson } from "../api";
+import { deleteJson, fetchJson, updateJson } from "../api";
 import { BASE_URL } from "../../utils/url";
 
+// Fetch categories
+export const fetchCategory = createAsyncThunk(
+  "categories/fetchCategories",
+  async () => {
+    const response = await fetchJson(BASE_URL + "/categories");
+    return response;
+  }
+);
+
+// Add a new category
+export const addCategory = createAsyncThunk(
+  "categories/addCategory",
+  async (newCategory: Category) => {
+    const response = await updateJson(BASE_URL + "/categories", newCategory, "POST");
+    return response;
+  }
+);
+
+// Update an existing category
+export const updateCategory = createAsyncThunk(
+  "categories/updateCategory",
+  async (category: Category) => {
+    const response = await updateJson(`${BASE_URL}/categories/${category.id}`, category, "PUT");
+    return response;
+  }
+);
+
+// Delete a category
+export const deleteCategory = createAsyncThunk(
+  "categories/deleteCategory",
+  async (categoryId: string) => {
+    await deleteJson(BASE_URL + "/categories", categoryId);
+    return categoryId;
+  }
+);
+
 interface Category {
-  id: number;
+  id: string; 
   name: string;
 }
 
-export const fetchCategory = createAsyncThunk(
-  'categories',
-  async () => {
-    const categoryInfo = await fetchJson(BASE_URL + '/categories')
-    return categoryInfo
-  }
-)
-
 interface CategoryState {
-  entities: Record<number, Category>;
-  ids: number[];
+  entities: Record<string, Category>; 
+  ids: string[]; 
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
@@ -30,26 +58,56 @@ const initialState: CategoryState = {
 };
 
 const categorySlice = createSlice({
-  name: 'categories',
+  name: "categories",
   initialState,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(fetchCategory.pending, (state) => {
-      state.status = 'loading';
-    })
-    builder.addCase(fetchCategory.fulfilled, (state, action) => {
-      state.status = 'succeeded';
-      const categories: Category[] = action.payload
-      state.ids = categories.map((category) => category.id)
-      categories.forEach((category) => {
-        state.entities[category.id] = category;
+    builder
+      .addCase(fetchCategory.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchCategory.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        const categories: Category[] = action.payload;
+        state.ids = categories.map((category) => category.id);
+        categories.forEach((category) => {
+          state.entities[category.id] = category;
+        });
+      })
+      .addCase(fetchCategory.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action?.error.message || "Failed to fetch categories";
+      })
+      // Add category
+      .addCase(addCategory.fulfilled, (state, action) => {
+        console.log(action);
+        
+        const addedCategory: Category = action.meta.arg;
+        state.entities[addedCategory.id] = addedCategory;
+        state.ids.push(addedCategory.id);
+      })
+      // Update category
+      .addCase(updateCategory.fulfilled, (state, action) => {
+        console.log(action);
+        
+        const updatedCategory: Category = action.meta.arg;
+        state.entities[updatedCategory.id] = updatedCategory;
+      })
+      .addCase(updateCategory.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action?.error.message || "Failed to update category";
+      })
+      // Delete category
+      .addCase(deleteCategory.fulfilled, (state, action) => {
+        const categoryId = action.payload;
+        delete state.entities[categoryId];
+        state.ids = state.ids.filter((id) => id !== categoryId);
+      })
+      .addCase(deleteCategory.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action?.error.message || "Failed to delete category";
       });
-    })
-    builder.addCase(fetchCategory.rejected, (state, action) => {
-      state.status = 'failed';
-      // state.error = action.error.message
-    })
-  }
-})
+  },
+});
 
-export const categoryReducer = categorySlice.reducer
+export const categoryReducer = categorySlice.reducer;

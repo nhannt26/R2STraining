@@ -13,3 +13,4 @@ export const totalField: React.CSSProperties = {
   padding: "10px",
   borderRadius: '5px'
 };
+

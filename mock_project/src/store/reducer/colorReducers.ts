@@ -1,23 +1,59 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchJson } from "../api";
+import { deleteJson, fetchJson, updateJson } from "../api";
 import { BASE_URL } from "../../utils/url";
 
 interface Color {
-  id: number;
+  id: string;
   name: string;
 }
 
-export const fetchColor = createAsyncThunk(
-  'colors',
-  async () => {
-    const colorInfo = await fetchJson(BASE_URL + '/colors')
-    return colorInfo
+export const fetchColor = createAsyncThunk("colors", async () => {
+  const ColorInfo = await fetchJson(BASE_URL + "/colors");
+  return ColorInfo;
+});
+
+export const addColor = createAsyncThunk(
+  "colors/addColor",
+  async (newColor: Color) => {
+    const newId = (newColor.id || Date.now()).toString();
+    const response = await updateJson(
+      BASE_URL + "/colors",
+      { ...newColor, id: newId },
+      "POST"
+    );
+    return response;
   }
-)
+);
+
+export const updateColor = createAsyncThunk(
+  "colors/updateColor",
+  async (color: Color) => {
+    try {
+      const response = await updateJson(
+        `${BASE_URL}/colors/${color.id}`,
+        color,
+        "PUT"
+      );
+      console.log("Update response:", response);
+      return response;
+    } catch (error) {
+      console.error("Update failed:", error);
+      throw error;
+    }
+  }
+);
+
+export const deleteColor = createAsyncThunk(
+  "colors/deleteColor",
+  async (colorId: number) => {
+    await deleteJson(BASE_URL + "/colors", colorId.toString());
+    return colorId;
+  }
+);
 
 interface ColorState {
-  entities: Record<number, Color>;
-  ids: number[];
+  entities: Record<string, Color>;
+  ids: string[];
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
@@ -30,28 +66,50 @@ const initialState: ColorState = {
 };
 
 const colorSlice = createSlice({
-  name: 'colors',
+  name: "colors",
   initialState,
   reducers: {},
   extraReducers(builder) {
     builder.addCase(fetchColor.pending, (state) => {
-      state.status = 'loading';
-    })
+      state.status = "loading";
+    });
     builder.addCase(fetchColor.fulfilled, (state, action) => {
-      // console.log(action);
-      
-      state.status = 'succeeded';
-      const colors: Color[] = action.payload
-      state.ids = colors.map((color) => color.id)
+      state.status = "succeeded";
+      const colors: Color[] = action.payload;
+      state.ids = colors.map((color) => color.id);
       colors.forEach((color) => {
         state.entities[color.id] = color;
       });
-    })
+    });
     builder.addCase(fetchColor.rejected, (state, action) => {
-      state.status = 'failed';
-      // state.error = action.error.message
-    })
-  }
-})
+      state.status = "failed";
+    });
+    builder.addCase(addColor.fulfilled, (state, action) => {
+      // console.log(action);
+      
+      const addColor: Color = action.meta.arg;
+      const newId = addColor.id.toString();
+      state.entities[newId] = addColor;
+      state.ids.push(newId);
+    });
+    builder.addCase(updateColor.fulfilled, (state, action) => {
+      const updateColor: Color = action.payload;
+      state.entities[updateColor.id.toString()] = updateColor;
+    });
+    builder.addCase(updateColor.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action?.error.message || "Failed to update product";
+    });
+    builder.addCase(deleteColor.fulfilled, (state, action) => {
+      const colorId = action.payload.toString();
+      delete state.entities[colorId];
+      state.ids = state.ids.filter((id) => id !== colorId);
+    });
+    builder.addCase(deleteColor.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action?.error.message || "Failed to delete product";
+    });
+  },
+});
 
-export const colorReducer = colorSlice.reducer
+export const colorReducer = colorSlice.reducer;

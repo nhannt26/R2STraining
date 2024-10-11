@@ -1,20 +1,27 @@
 import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
-import React, { useState } from "react";
-import ProductModal from "../components/ProductModal";
+import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store/store";
-import { fetchCategory } from "../store/reducer/categoryReducers";
-import CreateIcon from '@mui/icons-material/Create';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { addCategory, deleteCategory, fetchCategory, updateCategory } from "../store/reducer/categoryReducers";
+import Notification from "../components/Notification";
+import ConfirmModal from "../components/ConfirmModal";
+import CategoryList from "../components/CategoryList";
+import { validateCategory } from "../utils/validation";
 
 const Categories = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { entities: categories = {}, ids: categoryIds = [], status } = useSelector((state: any) => state.category)
+  const { entities: products = {} } = useSelector((state: any) => state.product);
 
-  const [open, setOpen] = useState(false)
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
+  const [editId, setEditId] = useState<string | null>(null);
+  const [editName, setEditName] = useState<string>("");
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+  const [productCount, setProductCount] = useState<number>(0);
+  const [isAdding, setIsAdding] = useState(false)
+  const [newCategoryName, setNewCategoryName] = useState("")
+  const [notification, setNotification] = useState<{ message: string; type: "success" | "error"; } | null>(null);
 
   React.useEffect(() => {
     // console.log(status);
@@ -24,15 +31,111 @@ const Categories = () => {
     }
   }, [status, dispatch]);
 
+  const handleNotification = useCallback(
+    (message: string, type: "success" | "error") => {
+      setNotification({ message, type });
+    },
+    []
+  );
+
+  const handleEdit = useCallback((id: string) => {
+    setEditId(id)
+    setEditName(categories[id].name)
+  }, [categories])
+
+  const handleSave = useCallback(
+    async (id?: string) => {
+      const nameToValidate = id ? editName : newCategoryName;
+      const error = validateCategory(nameToValidate);
+      if (error) {
+        alert(error);
+        return;
+      }
+
+      if (!id) {
+        const maxId =
+          categoryIds.length > 0 ? Math.max(...categoryIds.map(Number)) : 0;
+        const newCategory = {
+          id: (maxId + 1).toString(),
+          name: newCategoryName,
+        };
+
+        const resultAction = await dispatch(addCategory(newCategory));
+        if (addCategory.fulfilled.match(resultAction)) {
+          handleNotification("Category added successfully!", "success");
+        } else {
+          handleNotification("Failed to add category", "error");
+        }
+        setIsAdding(false);
+        setNewCategoryName("");
+      } else {
+        const resultAction = await dispatch(
+          updateCategory({ id, name: editName })
+        );
+        if (updateCategory.fulfilled.match(resultAction)) {
+          handleNotification("Category updated successfully!", "success");
+        } else {
+          handleNotification("Failed to update category", "error");
+        }
+        setEditId(null);
+      }
+    },
+    [editName, newCategoryName, categoryIds, dispatch, handleNotification]
+  );
+
+  const handleCancel = useCallback(() => {
+    setEditId(null);
+    setEditName("");
+    setIsAdding(false)
+    setNewCategoryName("")
+  }, []);
+
+  const handleDeleteClick = useCallback(
+    (id: string) => {
+      const count = Array.isArray(products)
+        ? products.filter((product: any) => product.categoryId === id).length : 0;
+      setProductCount(count);
+      setSelectedCategoryId(id);
+      setOpenModal(true);
+    },
+    [products]
+  );
+
+  const handleCloseModal = useCallback(() => {
+    setOpenModal(false);
+    setSelectedCategoryId(null);
+  }, []);
+
+  const handleConfirmDelete = useCallback(() => {
+    if (selectedCategoryId) {
+      console.log("Deleting category with ID:", selectedCategoryId);
+      dispatch(deleteCategory(selectedCategoryId));
+    }
+    handleCloseModal();
+  }, [selectedCategoryId, dispatch, handleCloseModal]);
+
+  const handleAddCategory = () => {
+    setIsAdding(true);
+  };
+
   return (
     <>
-      <TableContainer style={{ marginTop: "20px" }}>
+      <TableContainer>
+        {notification && (
+          <Notification
+            message={notification.message}
+            type={notification.type}
+            onClose={() => setNotification(null)}
+          />
+        )}
+        <h1>Category List</h1>
         <div>
           <Button
             variant="outlined"
             color="success"
             startIcon={<LibraryAddIcon />}
-            onClick={handleOpen}
+            onClick={handleAddCategory}
+            // disabled={isAdding}
           >
             Add
           </Button>
@@ -45,43 +148,35 @@ const Categories = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {categoryIds.map((id: string, index: number) => (
-              <TableRow
-                key={id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {index + 1}
-                </TableCell>
-                <TableCell>{categories[id].name}</TableCell>
-                <TableCell align="right">
-                  <Button
-                    variant="outlined"
-                    disableElevation
-                    color="primary"
-                    type="submit"
-                    startIcon={<CreateIcon />}
-                    style={{ marginRight: "5px" }}
-                    onClick={handleOpen}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    disableElevation
-                    color="error"
-                    type="submit"
-                    startIcon={<DeleteIcon />}
-                  >
-                    Delete
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            <CategoryList
+              categoryIds={categoryIds}
+              categories={categories}
+              editId={editId}
+              editName={editName}
+              isAdding={isAdding}
+              newCategoryName={newCategoryName}
+              onEdit={handleEdit}
+              onSave={handleSave}
+              onCancel={handleCancel}
+              onDeleteClick={handleDeleteClick}
+              onNewCategoryChange={(e) => {
+                if (editId) {
+                  setEditName(e.target.value);
+                } else {
+                  setNewCategoryName(e.target.value);
+                }
+              }}
+            />
           </TableBody>
         </Table>
       </TableContainer >
-      {/* <ProductModal open={open} onClose={handleClose}/> */}
+      <ConfirmModal
+        open={openModal}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmDelete}
+        title="Confirm Deletion"
+        message={`This category is being used by ${productCount} product(s). Are you sure you want to delete it?`}
+      />
     </>
   )
 }
