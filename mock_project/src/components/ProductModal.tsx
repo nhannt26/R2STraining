@@ -1,5 +1,6 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { validateProductForm } from "../utils/validation";
 interface Product {
   id?: number;
   name: string;
@@ -59,6 +60,11 @@ const ProductModal: React.FC<ProductModalProps> = ({
   }, []);
 
   const handleSubmit = useCallback(() => {
+    const error = validateProductForm(formData);
+      if (error) {
+        alert(error);
+        return;
+      }
     // console.log("Submitting product:", formData);
     onSubmit(formData);
     onClose();
@@ -99,8 +105,17 @@ const ProductModal: React.FC<ProductModalProps> = ({
           fullWidth
           variant="outlined"
           sx={{ marginTop: "10px", marginBottom: "10px" }}
-          value={formData.available}
-          onChange={(e) => setFormData({ ...formData, available: +e.target.value })}
+          value={formData.available?.toLocaleString("en-US", { style: "decimal", minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+          onChange={(e) => setFormData({ ...formData, available: parseFloat(e.target.value.replace(/,/g, "")) })}
+        />
+        <TextField
+          margin="dense"
+          label="Sold"
+          type="text"
+          fullWidth
+          name="sold"
+          value={formData.sold?.toLocaleString("en-US", { style: "decimal", minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+          onChange={(e) => setFormData({ ...formData, sold: parseFloat(e.target.value.replace(/,/g, "")) })}
         />
         <FormControl fullWidth sx={{ marginTop: "10px", marginBottom: "10px" }}>
           <InputLabel id="demo-simple-select-label">Category</InputLabel>
@@ -130,18 +145,18 @@ const ProductModal: React.FC<ProductModalProps> = ({
             >
               {color.name}
             </Button>
-          ))};
+          ))}
         </Box>
         <TextField
           margin="dense"
           label="Price"
           name="price"
-          type="number"
+          type="text"
           fullWidth
           variant="outlined"
           sx={{ marginTop: "10px", marginBottom: "10px" }}
-          value={formData.price}
-          onChange={(e) => setFormData({ ...formData, price: +e.target.value })}
+          value={formData.price?.toLocaleString("en-US", { style: "decimal", minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+          onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value.replace(/,/g, "")) })}
         />
       </DialogContent>
       <DialogActions>

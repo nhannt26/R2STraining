@@ -1,38 +1,65 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../store/store";
 import { addColor, deleteColor, fetchColor } from "../store/reducer/colorReducers";
-import { Alert, Box, Button, Chip, Snackbar, Stack, TextField } from "@mui/material";
+import { Alert, Box, Chip, Snackbar, SnackbarCloseReason, Stack, TextField } from "@mui/material";
 import ConfirmModal from "../components/ConfirmModal";
 import ClearIcon from '@mui/icons-material/Clear';
+import { validateColor } from "../utils/validation";
+import { Button } from "../components";
 
 const Colors = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { entities: colors = {}, ids: colorIds = [], status } = useSelector((state: any) => state.color)
 
-  const [newColor, setNewColor] = useState({ name: "" })
+  const [newColor, setNewColor] = useState("")
   const [colorToDelete, setColorToDelete] = useState<number | null>(null)
   const [openModal, setOpenModal] = useState(false)
   const [openSnackBar, setOpenSnackBar] = useState(false)
   const [snackBarMsg, setSnackBarMsg] = useState<string>("")
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
 
-  const handleAddColor = () => {
-    if (newColor.name.trim()) {
-      const colorWithId = { ...newColor, id: Date.now().toString() };
+  React.useEffect(() => {
+    // console.log(status);
 
-      dispatch(addColor(colorWithId))
-        .unwrap()
-        .then(() => {
-          setSnackBarMsg("Thêm color thành công");
-          setOpenSnackBar(true);
-          setNewColor({ name: "" });
-        })
-        .catch((error) => {
-          setSnackBarMsg("Thêm color thất bại");
-          setOpenSnackBar(true);
-        });
+    if (status === "idle") {
+      dispatch(fetchColor())
+
     }
-  };
+  }, [status, dispatch]);
+
+  const handleNotification = useCallback(
+    (message: string, type: "success" | "error") => {
+      setNotification({ message, type });
+    },
+    []
+  );
+
+  const handleAddColor = useCallback(async (id?: string) => {
+    const error = validateColor(newColor);
+    if (error) {
+      alert(error);
+      return;
+    }
+    if (newColor.trim()) {
+      const newColorId =
+        colorIds.length > 0
+          ? (Math.max(...colorIds.map(Number)) + 1).toString()
+          : "1";
+      const resultAction = await dispatch(
+        addColor({ id: newColorId, name: newColor })
+      );
+      if (addColor.fulfilled.match(resultAction)) {
+        handleNotification("Color added successfully!", "success");
+      } else {
+        handleNotification("Failed to add color!", "error");
+      }
+      setNewColor("");
+    }
+  }, [colorIds, dispatch, newColor, handleNotification]);
 
   const handleOpenDeleteConfirm = (id: number) => {
     setOpenModal(true);
@@ -61,19 +88,20 @@ const Colors = () => {
     }
   };
 
-  React.useEffect(() => {
-    // console.log(status);
-
-    if (status === "idle") {
-      dispatch(fetchColor())
-
+  const handleCloseSnackBar = (
+    event: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason
+  ) => {
+    if (reason === "clickaway") {
+      return;
     }
-  }, [status, dispatch]);
+    setOpenSnackBar(false);
+  };
 
   return (
     <>
       <Box>
-        <Snackbar open={openSnackBar} autoHideDuration={3000}>
+        <Snackbar open={openSnackBar} autoHideDuration={3000} onClose={handleCloseSnackBar}>
           <Alert severity="success">
             {snackBarMsg}
           </Alert>
@@ -87,25 +115,24 @@ const Colors = () => {
                 label={colors[id].name}
                 onDelete={() => handleOpenDeleteConfirm(colors[id].id)}
                 deleteIcon={<ClearIcon />}
-                sx={{ width: "100px", height: "40px" }}
+                sx={{ width: "90px", height: "40px" }}
               />
             ))}
           </Stack>
           <Box display="flex" alignItems="center">
             <TextField
               label="Add Color"
-              value={newColor.name}
-              onChange={(e) => setNewColor({ ...newColor, name: e.target.value })}
-              sx={{marginLeft: "10px", marginRight: "10px"}}
+              value={newColor}
+              onChange={(e) => setNewColor(e.target.value )}
+              sx={{ marginLeft: "10px", marginRight: "10px" }}
             />
             <Button
               variant="outlined"
-              disableElevation
               color="primary"
               type="submit"
               onClick={handleAddColor}
+              label="Add"
             >
-              Add
             </Button>
           </Box>
         </Box>

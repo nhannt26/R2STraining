@@ -4,11 +4,10 @@ import React, { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { addCategory, deleteCategory, fetchCategory, updateCategory } from "../store/reducer/categoryReducers";
-import CreateIcon from '@mui/icons-material/Create';
-import DeleteIcon from '@mui/icons-material/Delete';
 import Notification from "../components/Notification";
 import ConfirmModal from "../components/ConfirmModal";
 import CategoryList from "../components/CategoryList";
+import { validateCategory } from "../utils/validation";
 
 const Categories = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -20,7 +19,6 @@ const Categories = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const [productCount, setProductCount] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState(1);
   const [isAdding, setIsAdding] = useState(false)
   const [newCategoryName, setNewCategoryName] = useState("")
   const [notification, setNotification] = useState<{ message: string; type: "success" | "error"; } | null>(null);
@@ -33,14 +31,12 @@ const Categories = () => {
     }
   }, [status, dispatch]);
 
-  const getProductCountByCategory = useCallback(
-    (categoryIds: string) => {
-      return Object.values(products).filter(
-        (product: any) => product.category === categoryIds
-      ).length
+  const handleNotification = useCallback(
+    (message: string, type: "success" | "error") => {
+      setNotification({ message, type });
     },
-    [products]
-  )
+    []
+  );
 
   const handleEdit = useCallback((id: string) => {
     setEditId(id)
@@ -48,28 +44,43 @@ const Categories = () => {
   }, [categories])
 
   const handleSave = useCallback(
-    (id: string) => {
-      // Early return to avoid unnecessary calculations if saving a new category
-      if (id === "new") {
+    async (id?: string) => {
+      const nameToValidate = id ? editName : newCategoryName;
+      const error = validateCategory(nameToValidate);
+      if (error) {
+        alert(error);
+        return;
+      }
+
+      if (!id) {
         const maxId =
           categoryIds.length > 0 ? Math.max(...categoryIds.map(Number)) : 0;
         const newCategory = {
           id: (maxId + 1).toString(),
           name: newCategoryName,
         };
-        dispatch(addCategory(newCategory));
+
+        const resultAction = await dispatch(addCategory(newCategory));
+        if (addCategory.fulfilled.match(resultAction)) {
+          handleNotification("Category added successfully!", "success");
+        } else {
+          handleNotification("Failed to add category", "error");
+        }
         setIsAdding(false);
         setNewCategoryName("");
-        setNotification({ message: "Category added successfully!", type: "success", });
       } else {
-        // Efficiently update category name using spread syntax
-        dispatch(updateCategory({ id, name: editName }));
+        const resultAction = await dispatch(
+          updateCategory({ id, name: editName })
+        );
+        if (updateCategory.fulfilled.match(resultAction)) {
+          handleNotification("Category updated successfully!", "success");
+        } else {
+          handleNotification("Failed to update category", "error");
+        }
         setEditId(null);
-        setNotification({ message: "Category updated successfully!", type: "success" });
       }
     },
-    // Optimized dependency array: Only include reactive values
-    [editName, newCategoryName, dispatch, categoryIds]
+    [editName, newCategoryName, categoryIds, dispatch, handleNotification]
   );
 
   const handleCancel = useCallback(() => {
@@ -140,7 +151,6 @@ const Categories = () => {
             <CategoryList
               categoryIds={categoryIds}
               categories={categories}
-              currentPage={currentPage}
               editId={editId}
               editName={editName}
               isAdding={isAdding}

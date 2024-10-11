@@ -35,10 +35,6 @@ const Products = () => {
   const [modalMode, setModalMode] = useState<"add" | "edit">("add");
   const [productIdDelete, setProductIdDelete] = useState<number | null>(null);
 
-  const handleUpdate = (product: any) => {
-    dispatch(updateProduct(product))
-  }
-
   const handleDelete = (productId: any) => {
     setProductIdDelete(productId)
     setOpenConfirmModal(true)
@@ -82,7 +78,7 @@ const Products = () => {
   const handleAddProduct = () => {
     setSelectedProduct({
       name: "", available: "", sold: 0, category: 1, colors: [], price: "",
-      id: new Date().toLocaleDateString(),
+      id: new Date().getTime(),
     })
     setModalMode("add");
     setOpenModal(true)
