@@ -80,7 +80,10 @@ const Products = () => {
   }
 
   const handleAddProduct = () => {
-    setSelectedProduct({ id: productIds.length + 1, name: "", available: 0, sold: 0, category: 1, colors: [], price: 0 })
+    setSelectedProduct({
+      name: "", available: "", sold: 0, category: 1, colors: [], price: "",
+      id: new Date().toLocaleDateString(),
+    })
     setModalMode("add");
     setOpenModal(true)
   };
@@ -128,9 +131,9 @@ const Products = () => {
               textAlign: "center",
             }}
           >
-            <div style={totalField}>Total {totalProducts}</div>
-            <div style={totalField}>Available {totalAvailable}</div>
-            <div style={totalField}>Sold {totalSold}</div>
+            <div style={totalField}>Total {totalProducts.toLocaleString()}</div>
+            <div style={totalField}>Available {totalAvailable.toLocaleString()}</div>
+            <div style={totalField}>Sold {totalSold.toLocaleString()}</div>
             <div style={totalField}>Revenue {revenue.toLocaleString()}</div>
             <Button
               variant="outlined"
@@ -170,8 +173,8 @@ const Products = () => {
         message="Do you want to delete this product?"
       />
       <ProductModal
-        open={openModal} 
-        onClose={() => setOpenModal(false)} 
+        open={openModal}
+        onClose={() => setOpenModal(false)}
         onSubmit={handleSave}
         product={selectedProduct}
         categories={categories || []}

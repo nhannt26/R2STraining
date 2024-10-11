@@ -80,13 +80,17 @@ const categorySlice = createSlice({
       })
       // Add category
       .addCase(addCategory.fulfilled, (state, action) => {
-        const addedCategory: Category = action.payload;
+        console.log(action);
+        
+        const addedCategory: Category = action.meta.arg;
         state.entities[addedCategory.id] = addedCategory;
         state.ids.push(addedCategory.id);
       })
       // Update category
       .addCase(updateCategory.fulfilled, (state, action) => {
-        const updatedCategory: Category = action.payload;
+        console.log(action);
+        
+        const updatedCategory: Category = action.meta.arg;
         state.entities[updatedCategory.id] = updatedCategory;
       })
       .addCase(updateCategory.rejected, (state, action) => {

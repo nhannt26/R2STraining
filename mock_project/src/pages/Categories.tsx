@@ -8,6 +8,7 @@ import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Notification from "../components/Notification";
 import ConfirmModal from "../components/ConfirmModal";
+import CategoryList from "../components/CategoryList";
 
 const Categories = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -60,11 +61,12 @@ const Categories = () => {
         setIsAdding(false);
         setNewCategoryName("");
         setNotification({ message: "Category added successfully!", type: "success", });
+      } else {
+        // Efficiently update category name using spread syntax
+        dispatch(updateCategory({ id, name: editName }));
+        setEditId(null);
+        setNotification({ message: "Category updated successfully!", type: "success" });
       }
-      // Efficiently update category name using spread syntax
-      dispatch(updateCategory({ id, name: editName }));
-      setEditId(null);
-      setNotification({ message: "Category updated successfully!", type: "success" });
     },
     // Optimized dependency array: Only include reactive values
     [editName, newCategoryName, dispatch, categoryIds]
@@ -122,7 +124,7 @@ const Categories = () => {
             color="success"
             startIcon={<LibraryAddIcon />}
             onClick={handleAddCategory}
-            disabled={isAdding}
+            // disabled={isAdding}
           >
             Add
           </Button>
@@ -132,43 +134,29 @@ const Categories = () => {
             <TableRow>
               <TableCell>No</TableCell>
               <TableCell>Name</TableCell>
-              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {categoryIds.map((id: string, index: number) => (
-              <TableRow
-                key={id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {index + 1}
-                </TableCell>
-                <TableCell>{categories[id].name}</TableCell>
-                <TableCell align="right">
-                  <Button
-                    variant="outlined"
-                    disableElevation
-                    color="primary"
-                    type="submit"
-                    startIcon={<CreateIcon />}
-                    style={{ marginRight: "5px" }}
-                  // onClick={handleOpen}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    disableElevation
-                    color="error"
-                    type="submit"
-                    startIcon={<DeleteIcon />}
-                  >
-                    Delete
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            <CategoryList
+              categoryIds={categoryIds}
+              categories={categories}
+              currentPage={currentPage}
+              editId={editId}
+              editName={editName}
+              isAdding={isAdding}
+              newCategoryName={newCategoryName}
+              onEdit={handleEdit}
+              onSave={handleSave}
+              onCancel={handleCancel}
+              onDeleteClick={handleDeleteClick}
+              onNewCategoryChange={(e) => {
+                if (editId) {
+                  setEditName(e.target.value);
+                } else {
+                  setNewCategoryName(e.target.value);
+                }
+              }}
+            />
           </TableBody>
         </Table>
       </TableContainer >

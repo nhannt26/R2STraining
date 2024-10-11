@@ -77,7 +77,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>{product ? "Add new Product" : "Edit product"}</DialogTitle>
+      <DialogTitle>{!product ? "Add new Product" : "Edit product"}</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus

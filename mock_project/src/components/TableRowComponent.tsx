@@ -32,13 +32,14 @@ const TableRowComponent: React.FC<TableRowComponentProps> = ({
       <TableCell>{colors}</TableCell>
       <TableCell>{product.price.toLocaleString()}</TableCell>
       <TableCell
-        style={{ display: "flex", justifyContent: "space-evenly" }}
+        style={{ display: "flex", gap: "10px"}}
       >
         <Button
           variant="outlined"
           label="Edit"
           onClick={() => onEdit(product.id)}
           startIcon={<EditIcon />}
+          
         />
         <Button
           variant="outlined"
