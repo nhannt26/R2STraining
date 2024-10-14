@@ -1,5 +1,5 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { validateProductForm } from "../utils/validation";
 interface Product {
   id?: number;
@@ -61,16 +61,17 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
   const handleSubmit = useCallback(() => {
     const error = validateProductForm(formData);
-      if (error) {
-        alert(error);
-        return;
-      }
+    if (error) {
+      alert(error);
+      return;
+    }
     // console.log("Submitting product:", formData);
     onSubmit(formData);
     onClose();
   }, [formData, onSubmit, onClose]);
 
   const categoryArray = Object.values(categories);
+
   const renderedCategories = useMemo(() => {
     return categoryArray.map((category) => (
       <MenuItem key={category.id} value={category.id}>
@@ -83,10 +84,9 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>{!product ? "Add new Product" : "Edit product"}</DialogTitle>
+      <DialogTitle>{product ? "Edit Product" : "Add Product"}</DialogTitle>
       <DialogContent>
         <TextField
-          autoFocus
           margin="dense"
           label="Name"
           name="name"
@@ -161,9 +161,9 @@ const ProductModal: React.FC<ProductModalProps> = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="primary">Cancel</Button>
-        <Button onClick={handleSubmit} color="primary">{product ? "Add" : "Update"}</Button>
+        <Button onClick={handleSubmit} color="primary">{product ? "Update" : "Add"}</Button>
       </DialogActions>
     </Dialog>
   );
 };
-export default ProductModal;
+export default memo(ProductModal);

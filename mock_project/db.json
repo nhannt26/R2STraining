@@ -35,6 +35,10 @@
   ],
   "colors": [
     {
+      "id": "1",
+      "name": "white"
+    },
+    {
       "id": "2",
       "name": "yellow"
     },
@@ -47,145 +51,85 @@
       "name": "pink"
     },
     {
+      "id": "5",
+      "name": "blue"
+    },
+    {
       "id": "6",
       "name": "silver"
-    },
-    {
-      "id": "1728619089247",
-      "name": "Blue"
-    },
-    {
-      "id": "1728619191185",
-      "name": "Green"
-    },
-    {
-      "id": "1728619301384",
-      "name": "Grey"
-    },
-    {
-      "id": "1728648397515",
-      "name": "Red"
-    },
-    {
-      "id": "1728648397516",
-      "name": "White"
     }
   ],
   "products": [
     {
-      "id": "2",
-      "name": "Trouser with tie PUT",
-      "available": 12,
-      "sold": 2,
+      "id": "1",
+      "name": "T-shirt long sleeve update",
+      "available": 23,
+      "sold": 10,
       "categoryId": 1,
       "colorIds": [
-        "1",
-        "2",
-        "6",
-        "1728619301384"
+        1,
+        6
+      ],
+      "price": 500000
+    },
+    {
+      "id": "2",
+      "name": "Trouser with tie",
+      "available": 4,
+      "sold": 2,
+      "categoryId": 3,
+      "colorIds": [
+        2,
+        3
       ],
       "price": 450000
     },
     {
-      "id": "2da2",
-      "name": "New",
-      "available": 23,
-      "sold": 0,
-      "categoryId": 3,
+      "id": "3",
+      "name": "Backpack Elsa",
+      "available": 100,
+      "sold": 7,
+      "categoryId": 2,
       "colorIds": [
-        "2"
+        6
       ],
-      "price": 220000
+      "price": 370000
     },
     {
       "id": "4",
-      "name": "",
-      "available": 0,
-      "sold": 0,
-      "categoryId": 0,
-      "colorIds": [],
-      "price": 0
-    },
-    {
-      "id": "4",
-      "name": "New",
-      "available": 34,
-      "sold": 0,
-      "categoryId": 3,
-      "colorIds": [
-        "1",
-        "4"
-      ],
-      "price": 40000
-    },
-    {
-      "id": "4",
-      "name": "New",
+      "name": "Silver necklace",
       "available": 30,
-      "sold": 0,
-      "categoryId": 3,
+      "sold": 1,
+      "categoryId": 2,
       "colorIds": [
-        "1",
-        "6"
+        3
       ],
-      "price": 230000
+      "price": 1450000
     },
     {
-      "id": "4",
-      "name": "New",
-      "available": 200,
-      "sold": 0,
-      "categoryId": 3,
-      "colorIds": [],
-      "price": 320000
-    },
-    {
-      "id": "4",
-      "name": "New",
-      "available": 34,
-      "sold": 0,
-      "categoryId": 3,
-      "colorIds": [
-        "1"
-      ],
-      "price": 40000
-    },
-    {
-      "id": "4",
-      "name": "New",
-      "available": 30,
-      "sold": 0,
-      "categoryId": 3,
-      "colorIds": [
-        "3",
-        "4"
-      ],
-      "price": 321000
-    },
-    {
-      "id": "11",
-      "name": "Iphone",
-      "available": 400,
-      "sold": 0,
-      "categoryId": 6,
-      "colorIds": [
-        "1",
-        "3"
-      ],
-      "price": 32000000
-    },
-    {
-      "id": "1728655188814",
-      "name": "Product",
-      "available": 1235,
-      "sold": 57,
+      "id": "5",
+      "name": "Silver necklace",
+      "available": 20,
+      "sold": 20,
       "categoryId": 4,
       "colorIds": [
-        "2",
-        "6",
-        "1728619191185"
+        6,
+        4
       ],
-      "price": 1000000000000
+      "price": 15000000
+    },
+    {
+      "id": "6",
+      "name": "Hoodie",
+      "available": 3,
+      "sold": 7,
+      "categoryId": 5,
+      "colorIds": [
+        1,
+        3,
+        6
+      ],
+      "price": 250000
     }
   ]
 }

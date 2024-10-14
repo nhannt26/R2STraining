@@ -4,8 +4,9 @@ import TableCell from "@mui/material/TableCell";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "./Button";
+import { fixedCellStyle } from "../pages/style";
 
-interface TableRowComponentProps {
+interface ProductListProps {
   product: any;
   index: number;
   category: string;
@@ -14,7 +15,7 @@ interface TableRowComponentProps {
   onDelete: (id: number) => void;
 }
 
-const TableRowComponent: React.FC<TableRowComponentProps> = ({
+const ProductList: React.FC<ProductListProps> = ({
   product,
   index,
   category,
@@ -25,7 +26,7 @@ const TableRowComponent: React.FC<TableRowComponentProps> = ({
   return (
     <TableRow>
       <TableCell>{index + 1}</TableCell>
-      <TableCell style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>
+      <TableCell style={{ whiteSpace: 'normal', wordWrap: 'break-word', ...fixedCellStyle }}>
         {product.name}
       </TableCell>
       <TableCell>{product.available}</TableCell>
@@ -57,4 +58,4 @@ const TableRowComponent: React.FC<TableRowComponentProps> = ({
   );
 };
 
-export default React.memo(TableRowComponent);
+export default React.memo(ProductList);

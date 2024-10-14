@@ -7,18 +7,18 @@ import { addCategory, deleteCategory, fetchCategory, updateCategory } from "../s
 import Notification from "../components/Notification";
 import ConfirmModal from "../components/ConfirmModal";
 import CategoryList from "../components/CategoryList";
-import { validateCategory } from "../utils/validation";
+import { validateString } from "../utils/validation";
 
 const Categories = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { entities: categories = {}, ids: categoryIds = [], status } = useSelector((state: any) => state.category)
-  const { entities: products = {} } = useSelector((state: any) => state.product);
+  const { entities: products = [] } = useSelector((state: any) => state.product);
 
   const [editId, setEditId] = useState<string | null>(null);
   const [editName, setEditName] = useState<string>("");
   const [openModal, setOpenModal] = useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
-  const [productCount, setProductCount] = useState<number>(0);
+  const [productCount, setProductCount] = useState(0);
   const [isAdding, setIsAdding] = useState(false)
   const [newCategoryName, setNewCategoryName] = useState("")
   const [notification, setNotification] = useState<{ message: string; type: "success" | "error"; } | null>(null);
@@ -46,7 +46,8 @@ const Categories = () => {
   const handleSave = useCallback(
     async (id?: string) => {
       const nameToValidate = id ? editName : newCategoryName;
-      const error = validateCategory(nameToValidate);
+      const validateFn = validateString("Category", 20);
+      const error = validateFn(nameToValidate);
       if (error) {
         alert(error);
         return;
@@ -106,17 +107,21 @@ const Categories = () => {
     setSelectedCategoryId(null);
   }, []);
 
-  const handleConfirmDelete = useCallback(() => {
+  const handleConfirmDelete = useCallback(async () => {
     if (selectedCategoryId) {
-      console.log("Deleting category with ID:", selectedCategoryId);
-      dispatch(deleteCategory(selectedCategoryId));
+      const resultAction = await dispatch(deleteCategory(selectedCategoryId));
+      if (deleteCategory.fulfilled.match(resultAction)) {
+        handleNotification("Category deleted successfully!", "success");
+      } else {
+        handleNotification("Failed to delete category", "error");
+      }
     }
     handleCloseModal();
-  }, [selectedCategoryId, dispatch, handleCloseModal]);
+  }, [selectedCategoryId, dispatch, handleCloseModal, handleNotification]);
 
-  const handleAddCategory = () => {
+  const handleAddCategory = useCallback(() => {
     setIsAdding(true);
-  };
+  },[]);
 
   return (
     <>

@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import TableRowComponent from "./TableRowComponent"; // Import component mới
+import ProductList from "./ProductList";
 
 const TableBody = ({
   products,
@@ -49,7 +49,7 @@ const TableBody = ({
         const colorNames = getColorNamesById(product.colorIds || []);
 
         return (
-          <TableRowComponent
+          <ProductList
             key={id}
             product={product}
             index={index}

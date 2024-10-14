@@ -7,6 +7,19 @@ export const boxStyle = {
   padding: '20px',
 };
 
+export const totalAddComponent: React.CSSProperties = {
+  marginBottom: "20px",
+  display: "flex",
+}
+
+export const totalComponent: React.CSSProperties = {
+  width: "50%",
+  display: "flex",
+  justifyContent: "space-evenly",
+  alignItems: "center",
+  textAlign: "center",
+}
+
 export const totalField: React.CSSProperties = {
   backgroundColor: "lightgrey",
   textAlign: "center",
@@ -14,3 +27,9 @@ export const totalField: React.CSSProperties = {
   borderRadius: '5px'
 };
 
+export const fixedCellStyle: React.CSSProperties = {
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+  maxWidth: 100,
+}

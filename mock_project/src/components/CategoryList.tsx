@@ -1,4 +1,4 @@
-import React from "react";
+import React, {memo} from "react";
 import { TableRow, TableCell, TextField } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -101,4 +101,4 @@ const CategoryList: React.FC<CategoryListProps> = ({
   );
 };
 
-export default CategoryList;
+export default memo(CategoryList);

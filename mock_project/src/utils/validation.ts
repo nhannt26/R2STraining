@@ -45,21 +45,13 @@ export const validateProductForm = (formData: Product): string | null => {
   }
   return null; 
 };
-export const validateCategory = (categoryName: string): string | null => {
-  if (!categoryName.trim()) {
-    return "Category name is required";
-  }
-  if (categoryName.length > 20) {
-    return "Category name must be less than 20 characters";
-  }
-  return null;
-};
-export const validateColor = (colorName: string): string | null => {
-  if (!colorName.trim()) {
-    return "Color name is required";
-  }
-  if (colorName.length > 10) {
-    return "Color name must be less than 10 characters";
-  }
-  return null;
+export const validateString = function (label: string, length: number) {
+  return function (str: string) {
+    if (!str.trim()) {
+      return `${label} name is required`;
+    }
+    if (str.length > length) {
+      return `${label} name must be less than ${length} characters`;
+    }
+  };
 };

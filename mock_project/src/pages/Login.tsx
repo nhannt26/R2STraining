@@ -5,14 +5,13 @@ import { Input, Button } from '../components';
 import { validateForm } from './../utils/validation';
 import Box from '@mui/material/Box';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { boxStyle } from './style';
 import { login as handleLogin } from '../store/reducer/authReducers'
 import { AppDispatch } from '../store/store';
 
 const Login = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
   const auth = useSelector((state: any) => state.auth);
   // console.log('auth ', auth);
   const [errorMsgs, setErrorMsg] = useState({
@@ -47,7 +46,7 @@ const Login = () => {
     if (inputRefs.current.email && inputRefs.current.password) {
       const email = inputRefs.current.email.value;
       const password = inputRefs.current.password.value;
-      return email && password && !auth.isLoggedIn ? 'Username or password is incorrect' : ''
+      return email && password && !auth.isLoggedIn ? 'Email or password is incorrect' : ''
     }
   }, [auth.isLoggedIn, errorMsgs.password])
 

@@ -5,8 +5,8 @@ import { addColor, deleteColor, fetchColor } from "../store/reducer/colorReducer
 import { Alert, Box, Chip, Snackbar, SnackbarCloseReason, Stack, TextField } from "@mui/material";
 import ConfirmModal from "../components/ConfirmModal";
 import ClearIcon from '@mui/icons-material/Clear';
-import { validateColor } from "../utils/validation";
 import { Button } from "../components";
+import { validateString } from "../utils/validation";
 
 const Colors = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -39,7 +39,8 @@ const Colors = () => {
   );
 
   const handleAddColor = useCallback(async (id?: string) => {
-    const error = validateColor(newColor);
+    const validateFn = validateString("Color", 10);
+    const error = validateFn(newColor);
     if (error) {
       alert(error);
       return;
@@ -123,7 +124,7 @@ const Colors = () => {
             <TextField
               label="Add Color"
               value={newColor}
-              onChange={(e) => setNewColor(e.target.value )}
+              onChange={(e) => setNewColor(e.target.value)}
               sx={{ marginLeft: "10px", marginRight: "10px" }}
             />
             <Button
