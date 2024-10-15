@@ -7,6 +7,10 @@ export const boxStyle = {
   padding: '20px',
 };
 
+export const loginBtnStyle = {
+  marginTop: "10px"
+}
+
 export const totalAddComponent: React.CSSProperties = {
   marginBottom: "20px",
   display: "flex",

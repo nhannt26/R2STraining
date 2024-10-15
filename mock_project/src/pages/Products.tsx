@@ -40,10 +40,11 @@ const Products = () => {
 
   React.useEffect(() => {
     // console.log(status);
-
-    dispatch(fetchProducts());
-    dispatch(fetchColor())
-    dispatch(fetchCategory())
+    if (status === "idle") {
+      dispatch(fetchProducts());
+      dispatch(fetchColor())
+      dispatch(fetchCategory())
+    }
   }, [status, dispatch]);
 
   const handleNotification = useCallback(

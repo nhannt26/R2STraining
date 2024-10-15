@@ -4,7 +4,7 @@ import { BASE_URL } from "../../utils/url";
 
 // Fetch categories
 export const fetchCategory = createAsyncThunk(
-  "categories/fetchCategories",
+  "categories/fetchCategory",
   async () => {
     const response = await fetchJson(BASE_URL + "/categories");
     return response;

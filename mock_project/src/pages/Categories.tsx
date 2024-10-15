@@ -46,12 +46,12 @@ const Categories = () => {
   const handleSave = useCallback(
     async (id?: string) => {
       const nameToValidate = id ? editName : newCategoryName;
-      const validateFn = validateString("Category", 20);
+      const validateFn = validateString("Category", 0);
       const error = validateFn(nameToValidate);
-      if (error) {
-        alert(error);
-        return;
-      }
+      // if (error) {
+      //   alert(error);
+      //   return;
+      // }
 
       if (!id) {
         const maxId =

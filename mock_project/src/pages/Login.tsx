@@ -6,7 +6,7 @@ import { validateForm } from './../utils/validation';
 import Box from '@mui/material/Box';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { boxStyle } from './style';
+import { boxStyle, loginBtnStyle } from './style';
 import { login as handleLogin } from '../store/reducer/authReducers'
 import { AppDispatch } from '../store/store';
 
@@ -58,7 +58,8 @@ const Login = () => {
     <div className='app'>
       <Box component='form' onSubmit={handleSubmit} style={boxStyle}>
         <Input
-          label='Username'
+          label='Email'
+          type='email'
           ref={(element) => (inputRefs.current.email = element)}
           error={errorMsgs.email}
         />
@@ -68,7 +69,7 @@ const Login = () => {
           ref={(element) => (inputRefs.current.password = element)}
           error={passErrMsg}
         />
-        <Button label={'Login'} variant='contained' color='primary' />
+        <Button style={loginBtnStyle} label={'Login'} variant='contained' color='primary' />
       </Box>
     </div>
   );
